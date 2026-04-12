@@ -150,15 +150,17 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 const DAY_LABELS = ["Su","Mo","Tu","We","Th","Fr","Sa"];
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-// Dark mode
+// Dark mode — auto-enabled, respects saved preference
 const darkBtn = document.getElementById('dark-btn');
-const savedTheme = localStorage.getItem('theme') || 'light';
-if (savedTheme === 'dark') { document.documentElement.setAttribute('data-theme','dark'); darkBtn.textContent = '☀️'; }
+const savedTheme = localStorage.getItem('theme_lucy') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+darkBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 darkBtn.addEventListener('click', () => {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  darkBtn.textContent = isDark ? '🌙' : '☀️';
-  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  darkBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem('theme_lucy', next);
 });
 
 function pad(n) { return String(n).padStart(2,'0'); }
