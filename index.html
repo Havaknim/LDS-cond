@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cond. Roster</title>
+<title>Leeds Conductor Roster</title>
 <link rel="icon" href="favicon.png" sizes="any"><link rel="apple-touch-icon" href="favicon.png">
 <style>
 :root {
@@ -102,12 +102,21 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .adj-type.early { color: var(--early-color); }
 .adj-type.late { color: var(--late-color); }
 .placeholder { color: var(--text-hint); font-size: 14px; text-align: center; padding: 0.5rem 0; }
+.jump-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.jump-label { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+.jump-btn { height: 32px; padding: 0 14px; border: none; background: var(--accent-light); border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--accent-text); transition: opacity 0.15s; white-space: nowrap; }
+.jump-btn:hover { opacity: 0.8; }
+.payday-dot { position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #f9ca24; }
+.day-cell.selected .payday-dot { background: #fff; }
+.payday-note { font-size: 12px; color: #c9a500; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+[data-theme="dark"] .payday-note { color: #f9ca24; }
+.special-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="top-bar">
-    <h1>Cond. Roster</h1>
+    <h1>Leeds Conductor Roster</h1>
     <button class="dark-btn" id="dark-btn" title="Toggle dark mode">🌙</button>
   </div>
 
@@ -127,12 +136,15 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
     <div class="cal-header">
       <button class="nav-btn" id="prev-btn">&#8249;</button>
       <h2 id="month-label"></h2>
-      <div class="cal-nav">
-        <button class="today-btn" id="today-btn">Today</button>
-        <button class="nav-btn" id="next-btn">&#8250;</button>
-      </div>
+      <button class="nav-btn" id="next-btn">&#8250;</button>
     </div>
     <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <div class="jump-bar">
+    <span class="jump-label">Jump to</span>
+    <button class="jump-btn" id="today-btn">Today</button>
+    <button class="jump-btn" id="next-turn-btn">Next turn of duty</button>
   </div>
 
   <div class="result-card" id="result-card">
@@ -146,21 +158,22 @@ async function init() {
   const ROSTER_DATA = await response.json();
 
 
+const PAYDAYS = new Set(["2026-04-10","2026-05-08","2026-06-05","2026-07-03","2026-07-31","2026-08-28","2026-09-25","2026-10-23","2026-11-20","2026-12-18","2027-01-15","2027-02-12","2027-03-12","2027-04-09","2027-05-07","2027-06-04","2027-07-02","2027-07-30","2027-08-27","2027-09-24","2027-10-22","2027-11-19","2027-12-17","2028-01-14","2028-02-11","2028-03-10","2028-04-07","2028-05-05","2028-06-02","2028-06-30","2028-07-28","2028-08-25","2028-09-22","2028-10-20","2028-11-17","2028-12-15","2029-01-12","2029-02-09","2029-03-09","2029-04-06"]);
+const SPECIAL_DAYS = {"2026-12-25":"Public holiday — not required to work","2026-12-26":"Public holiday — not required to work","2027-12-25":"Public holiday — not required to work","2027-12-26":"Public holiday — not required to work","2028-12-25":"Public holiday — not required to work","2028-12-26":"Public holiday — not required to work","2029-12-25":"Public holiday — not required to work","2029-12-26":"Public holiday — not required to work"};
+
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAY_LABELS = ["Su","Mo","Tu","We","Th","Fr","Sa"];
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-// Dark mode — auto-enabled, respects saved preference
+// Dark mode
 const darkBtn = document.getElementById('dark-btn');
-const savedTheme = localStorage.getItem('theme_lucy') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-darkBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme); darkBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 darkBtn.addEventListener('click', () => {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const next = isDark ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  darkBtn.textContent = next === 'dark' ? '☀️' : '🌙';
-  localStorage.setItem('theme_lucy', next);
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  darkBtn.textContent = isDark ? '🌙' : '☀️';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
 });
 
 function pad(n) { return String(n).padStart(2,'0'); }
@@ -226,7 +239,16 @@ function getShift(dateKey, linkName, line) {
   const shiftedWeekIdx = (weekFromAnchor + (line - 1)) % cycleLen;
   const weekData = link.weeks[shiftedWeekIdx];
   if (!weekData) return null;
-  return weekData[DAY_NAMES[dayOfWeek]] || null;
+  const day = weekData[DAY_NAMES[dayOfWeek]];
+  if (!day) return null;
+  // Apply EARLY/LATE based on calendar date, not week number
+  const changeDate = new Date(link.timetable_change_date + 'T00:00:00');
+  if (dt >= changeDate && day.type === 'SHIFT') {
+    // Odd week number = LATE, even = EARLY
+    const wkNum = shiftedWeekIdx + 1;
+    return { type: wkNum % 2 === 1 ? 'LATE' : 'EARLY' };
+  }
+  return day;
 }
 
 // Calendar state
@@ -260,6 +282,7 @@ function renderCalendar() {
     if (k === selectedKey) cls += ' selected';
     if (k === todayKey) cls += ' today-cell';
     el.className = cls;
+    if (PAYDAYS.has(k)) { const dot = document.createElement('div'); dot.className = 'payday-dot'; el.appendChild(dot); }
     if (shift) { el.addEventListener('click', () => { selectedKey = k; renderCalendar(); renderResult(); }); }
     grid.appendChild(el);
   }
@@ -307,20 +330,10 @@ function renderResult() {
   else if (shift.type === 'EARLY') mainHTML = `<div class="type-block early">Early shift</div>`;
   else if (shift.type === 'LATE') mainHTML = `<div class="type-block late">Late shift</div>`;
   else mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}">${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`;
-  rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>`;
+  const paydayHTML = PAYDAYS.has(selectedKey) ? `<p class="payday-note">💷 Payday</p>` : '';
+  const specialHTML = SPECIAL_DAYS[selectedKey] ? `<p class="special-note">${SPECIAL_DAYS[selectedKey]}</p>` : '';
+  rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${paydayHTML}${specialHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>`;
 }
 
 document.getElementById('prev-btn').addEventListener('click', () => { viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar(); });
-document.getElementById('next-btn').addEventListener('click', () => { viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(); });
-document.getElementById('today-btn').addEventListener('click', () => {
-  viewYear = _now.getFullYear(); viewMonth = _now.getMonth();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
-});
-
-renderCalendar();
-renderResult();
-
-}
-init();
-</script>
+document.getEleme
