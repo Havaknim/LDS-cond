@@ -336,4 +336,35 @@ function renderResult() {
 }
 
 document.getElementById('prev-btn').addEventListener('click', () => { viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar(); });
-document.getEleme
+document.getElementById('next-btn').addEventListener('click', () => { viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(); });
+document.getElementById('today-btn').addEventListener('click', () => {
+  viewYear = _now.getFullYear(); viewMonth = _now.getMonth();
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+
+document.getElementById('next-turn-btn').addEventListener('click', () => {
+  const link = linkSel.value;
+  const line = parseInt(lineSel.value);
+  // Search from tomorrow onwards for next working day
+  const start = new Date(_now.getTime() + 86400000);
+  let found = null;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(start.getTime() + i * 86400000);
+    const k = dateStr(d);
+    const shift = getShift(k, link, line);
+    if (shift && shift.type !== 'RD') { found = { key: k, year: d.getFullYear(), month: d.getMonth() }; break; }
+  }
+  if (found) {
+    viewYear = found.year; viewMonth = found.month;
+    selectedKey = found.key;
+    renderCalendar(); renderResult();
+  }
+});
+
+renderCalendar();
+renderResult();
+
+}
+init();
+</script>
