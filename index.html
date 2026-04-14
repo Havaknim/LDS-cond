@@ -20,6 +20,7 @@
   --accent-light: #ede9ff;
   --accent-text: #6c5ce7;
   --rd-color: #74b9ff;
+  --ar-color: #00b894;
   --shadow: 0 2px 12px rgba(0,0,0,0.08);
   --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -37,6 +38,7 @@
   --accent-light: #2d2a4a;
   --accent-text: #a29bfe;
   --rd-color: #74b9ff;
+  --ar-color: #55efc4;
   --shadow: 0 2px 16px rgba(0,0,0,0.4);
   --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -66,6 +68,7 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .day-cell.selected { background: var(--accent) !important; color: #fff !important; font-weight: 600; }
 .day-cell.today-cell:not(.selected)::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
 .day-cell.is-rd:not(.selected):not(.out-range) { color: var(--rd-color); }
+.day-cell.is-ar:not(.selected):not(.out-range) { color: var(--ar-color); }
 .jump-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; }
 .jump-label { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
 .jump-btn { height: 32px; padding: 0 14px; border: none; background: var(--accent-light); border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--accent-text); transition: opacity 0.15s; white-space: nowrap; }
@@ -88,12 +91,14 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .adj-times { font-size: 12px; color: var(--text-muted); }
 .adj-type { font-size: 13px; font-weight: 500; color: var(--text); }
 .adj-type.rd { color: var(--rd-color); }
+.adj-type.ar { color: var(--ar-color); }
 .payday-dot { position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #f9ca24; }
 .day-cell.selected .payday-dot { background: #fff; }
 .payday-note { font-size: 12px; color: #c9a500; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
 [data-theme="dark"] .payday-note { color: #f9ca24; }
 .special-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
 .placeholder { color: var(--text-hint); font-size: 14px; text-align: center; padding: 0.5rem 0; }
+.timetable-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; padding: 8px 10px; background: var(--metric-bg); border-radius: 8px; border-left: 3px solid var(--border); font-style: italic; }
 </style>
 </head>
 <body>
@@ -220,6 +225,7 @@ function renderCalendar() {
     let cls = 'day-cell';
     if (!shift) cls += ' out-range';
     else if (shift.type === 'RD') cls += ' is-rd';
+    else if (shift.type === 'SHIFT' && shift.turn === 'A/R') cls += ' is-ar';
     if (k === selectedKey) cls += ' selected';
     if (k === todayKey) cls += ' today-cell';
     el.className = cls;
@@ -237,7 +243,8 @@ function adjHTML(label, key) {
   if (!shift) return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">Outside roster</p></div>`;
   if (shift.type === 'RD') return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type rd">Rest day</p></div>`;
   if (shift.type === 'EARLY' || shift.type === 'LATE') return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">${shift.type === 'EARLY' ? 'Early' : 'Late'} shift</p></div>`;
-  return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-turn">${shift.turn}</p><p class="adj-times">${shift.start} – ${shift.end} · ${shift.length}</p></div>`;
+  const isAR = shift.turn === 'A/R';
+  return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-turn${isAR ? ' adj-type ar' : ''}">${shift.turn}</p><p class="adj-times">${shift.start} – ${shift.end} · ${shift.length}</p></div>`;
 }
 
 function renderResult() {
@@ -256,9 +263,9 @@ function renderResult() {
   const nextKey = dateStr(new Date(dt.getTime() + 86400000));
   let mainHTML = '';
   if (shift.type === 'RD') mainHTML = `<div class="type-block rd">Rest day</div>`;
-  else if (shift.type === 'EARLY') mainHTML = `<div class="type-block">Early shift</div>`;
-  else if (shift.type === 'LATE') mainHTML = `<div class="type-block">Late shift</div>`;
-  else mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}">${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`;
+  else if (shift.type === 'EARLY') mainHTML = `<div class="type-block">Early shift</div><p class="timetable-note">Job details aren't available for this date yet — the May timetable change hasn't been issued. Check back once the new diagrams are out.</p>`;
+  else if (shift.type === 'LATE') mainHTML = `<div class="type-block">Late shift</div><p class="timetable-note">Job details aren't available for this date yet — the May timetable change hasn't been issued. Check back once the new diagrams are out.</p>`;
+  else { const turnClass = shift.turn === 'A/R' ? ' style="color:var(--ar-color)"' : ''; mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}"${turnClass}>${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`; }
   const paydayHTML = PAYDAYS.has(selectedKey) ? `<p class="payday-note">&#x1F4B7; Payday</p>` : '';
   const specialHTML = SPECIAL_DAYS[selectedKey] ? `<p class="special-note">${SPECIAL_DAYS[selectedKey]}</p>` : '';
   rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${paydayHTML}${specialHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>`;
