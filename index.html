@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leeds Conductor Roster</title>
+<link rel="icon" href="favicon.png" sizes="any"><link rel="apple-touch-icon" href="favicon.png">
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #1a1a2e;
+  --text-muted: #888;
+  --text-hint: #bbb;
+  --border: #e8eaed;
+  --metric-bg: #f7f8fa;
+  --nav-bg: #f0f2f5;
+  --nav-hover: #e0e3e8;
+  --accent: #6c5ce7;
+  --accent-light: #ede9ff;
+  --accent-text: #6c5ce7;
+  --rd-color: #74b9ff;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+[data-theme="dark"] {
+  --bg: #0f0f17;
+  --card: #1a1a2a;
+  --text: #e8e8f0;
+  --text-muted: #888;
+  --text-hint: #555;
+  --border: #2a2a3a;
+  --metric-bg: #22223a;
+  --nav-bg: #22223a;
+  --nav-hover: #2e2e48;
+  --accent: #a29bfe;
+  --accent-light: #2d2a4a;
+  --accent-text: #a29bfe;
+  --rd-color: #74b9ff;
+  --shadow: 0 2px 16px rgba(0,0,0,0.4);
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 1.5rem 1rem 3rem; color: var(--text); transition: background 0.2s, color 0.2s; }
+.container { width: 100%; max-width: 420px; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+.dark-btn { width: 36px; height: 36px; border: 1.5px solid var(--border); background: var(--card); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+.dark-btn:hover { background: var(--nav-bg); }
+.selectors-card { background: var(--card); border-radius: 16px; padding: 1rem 1.25rem; box-shadow: var(--shadow); margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 10px; }
+.sel-row { display: flex; align-items: center; gap: 10px; }
+.sel-row label { font-size: 13px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; min-width: 80px; }
+.sel-row select { flex: 1; padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: var(--metric-bg); cursor: pointer; appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 10px center; transition: border-color 0.15s, background 0.2s; }
+.sel-row select:focus { outline: none; border-color: var(--accent); }
+.save-hint { font-size: 11px; color: var(--text-hint); text-align: right; margin-top: -2px; }
+.cal-card { background: var(--card); border-radius: 16px; padding: 1.25rem; box-shadow: var(--shadow); margin-bottom: 0.75rem; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 8px; }
+.cal-header h2 { font-size: 16px; font-weight: 600; color: var(--text); }
+.nav-btn { width: 32px; height: 32px; border: none; background: var(--nav-bg); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-muted); transition: background 0.15s; flex-shrink: 0; }
+.nav-btn:hover { background: var(--nav-hover); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.day-label { text-align: center; font-size: 12px; font-weight: 500; color: var(--text-hint); padding: 4px 0 8px; }
+.day-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 8px; cursor: pointer; color: var(--text); transition: background 0.12s; position: relative; }
+.day-cell:hover:not(.empty):not(.out-range) { background: var(--nav-bg); }
+.day-cell.empty, .day-cell.out-range { cursor: default; color: var(--text-hint); }
+.day-cell.selected { background: var(--accent) !important; color: #fff !important; font-weight: 600; }
+.day-cell.today-cell:not(.selected)::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.day-cell.is-rd:not(.selected):not(.out-range) { color: var(--rd-color); }
+.jump-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.jump-label { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+.jump-btn { height: 32px; padding: 0 14px; border: none; background: var(--accent-light); border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--accent-text); transition: opacity 0.15s; white-space: nowrap; }
+.jump-btn:hover { opacity: 0.8; }
+.result-card { background: var(--card); border-radius: 16px; padding: 1.25rem; box-shadow: var(--shadow); min-height: 80px; }
+.result-date-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wk-badge { font-size: 11px; background: var(--accent-light); color: var(--accent-text); border-radius: 20px; padding: 2px 10px; font-weight: 500; }
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.metric { background: var(--metric-bg); border-radius: 10px; padding: 10px 12px; }
+.metric-label { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
+.metric-value { font-size: 18px; font-weight: 600; color: var(--text); }
+.metric-value.small { font-size: 14px; }
+.type-block { background: var(--metric-bg); border-radius: 10px; padding: 14px; text-align: center; font-size: 17px; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
+.type-block.rd { color: var(--rd-color); }
+.adj-section { border-top: 1px solid var(--border); padding-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.adj-card { background: var(--metric-bg); border-radius: 10px; padding: 10px 12px; }
+.adj-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-hint); margin-bottom: 4px; }
+.adj-day-name { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
+.adj-turn { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+.adj-times { font-size: 12px; color: var(--text-muted); }
+.adj-type { font-size: 13px; font-weight: 500; color: var(--text); }
+.adj-type.rd { color: var(--rd-color); }
+.payday-dot { position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #f9ca24; }
+.day-cell.selected .payday-dot { background: #fff; }
+.payday-note { font-size: 12px; color: #c9a500; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+[data-theme="dark"] .payday-note { color: #f9ca24; }
+.special-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+.placeholder { color: var(--text-hint); font-size: 14px; text-align: center; padding: 0.5rem 0; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 2px; }
+.toggle-label { font-size: 13px; color: var(--text-muted); }
+.toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 24px; cursor: pointer; transition: background 0.2s; }
+.toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
+.toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+.perm-rows { display: none; flex-direction: column; gap: 10px; }
+.perm-rows.visible { display: flex; }
+.standard-line-row { display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <h1>Leeds Conductor Roster</h1>
+    <button class="dark-btn" id="dark-btn" title="Toggle dark mode">🌙</button>
+  </div>
+
+  <div class="selectors-card">
+    <div class="toggle-row">
+      <span class="toggle-label">Permanent earlies / lates</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="perm-toggle">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="sel-row">
+      <label for="link-sel">Link</label>
+      <select id="link-sel"></select>
+    </div>
+    <div class="standard-line-row" id="standard-line-row">
+      <div class="sel-row">
+        <label for="line-sel">Your line as of W/C 12/04/26:</label>
+        <select id="line-sel"></select>
+      </div>
+    </div>
+    <div class="perm-rows" id="perm-rows">
+      <div class="sel-row">
+        <label for="line-a-sel">Line A (W/C 12/04/26):</label>
+        <select id="line-a-sel"></select>
+      </div>
+      <div class="sel-row">
+        <label for="line-b-sel">Line B (W/C 19/04/26):</label>
+        <select id="line-b-sel"></select>
+      </div>
+    </div>
+    <p class="save-hint">Your selections are saved automatically</p>
+  </div>
+
+  <div class="cal-card">
+    <div class="cal-header">
+      <button class="nav-btn" id="prev-btn">&#8249;</button>
+      <h2 id="month-label"></h2>
+      <button class="nav-btn" id="next-btn">&#8250;</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <div class="jump-bar">
+    <span class="jump-label">Jump to</span>
+    <button class="jump-btn" id="today-btn">Today</button>
+    <button class="jump-btn" id="next-turn-btn">Next turn of duty</button>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <p class="placeholder">Select a date to view shift details.</p>
+  </div>
+</div>
+
+<script>
+const PAYDAYS = new Set(["2026-04-10","2026-05-08","2026-06-05","2026-07-03","2026-07-31","2026-08-28","2026-09-25","2026-10-23","2026-11-20","2026-12-18","2027-01-15","2027-02-12","2027-03-12","2027-04-09","2027-05-07","2027-06-04","2027-07-02","2027-07-30","2027-08-27","2027-09-24","2027-10-22","2027-11-19","2027-12-17","2028-01-14","2028-02-11","2028-03-10","2028-04-07","2028-05-05","2028-06-02","2028-06-30","2028-07-28","2028-08-25","2028-09-22","2028-10-20","2028-11-17","2028-12-15","2029-01-12","2029-02-09","2029-03-09","2029-04-06"]);
+const SPECIAL_DAYS = {"2026-12-25":"Public holiday \u2014 not required to work","2026-12-26":"Public holiday \u2014 not required to work","2027-12-25":"Public holiday \u2014 not required to work","2027-12-26":"Public holiday \u2014 not required to work","2028-12-25":"Public holiday \u2014 not required to work","2028-12-26":"Public holiday \u2014 not required to work","2029-12-25":"Public holiday \u2014 not required to work","2029-12-26":"Public holiday \u2014 not required to work"};
+
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAY_LABELS = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+function pad(n) { return String(n).padStart(2,'0'); }
+function dateStr(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+
+// Dark mode — auto dark for first-time visitors
+const darkBtn = document.getElementById('dark-btn');
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+darkBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+darkBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  darkBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem('theme', next);
+});
+
+const linkSel = document.getElementById('link-sel');
+const lineSel = document.getElementById('line-sel');
+const _now = new Date();
+const todayKey = dateStr(_now);
+let viewYear = _now.getFullYear(), viewMonth = _now.getMonth();
+let selectedKey = todayKey;
+let ROSTER_DATA = null;
+
+// ── Perm mode helpers ────────────────────────────────────────────────────────
+const ANCHOR_DATE = new Date('2026-04-12T00:00:00');
+
+function weekIndexFromAnchor(dateKey) {
+  const dt = new Date(dateKey + 'T00:00:00');
+  const diff = Math.round((dt - ANCHOR_DATE) / 86400000);
+  return diff < 0 ? null : Math.floor(diff / 7);
+}
+
+function wkNumForLine(dateKey, linkName, line) {
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const wi = weekIndexFromAnchor(dateKey);
+  if (wi === null) return null;
+  return ((wi + (line - 1)) % link.cycle_length) + 1;
+}
+
+// In perm mode, alternate: even weeks-from-anchor = Line A, odd = Line B
+function getEffectiveLine(weekFromAnchor, lineA, lineB) {
+  return weekFromAnchor % 2 === 0 ? lineA : lineB;
+}
+
+function getShift(dateKey, linkName, line) {
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const anchor = new Date(link.wk1_anchor + 'T00:00:00');
+  const dt = new Date(dateKey + 'T00:00:00');
+  const dayOfWeek = dt.getDay();
+  const diffDays = Math.round((dt - anchor) / 86400000);
+  if (diffDays < 0) return null;
+  const weekFromAnchor = Math.floor(diffDays / 7);
+  const cycleLen = link.cycle_length;
+  const shiftedWeekIdx = (weekFromAnchor + (line - 1)) % cycleLen;
+  const weekData = link.weeks[shiftedWeekIdx];
+  if (!weekData) return null;
+  const day = weekData[DAY_NAMES[dayOfWeek]];
+  if (!day) return null;
+  const changeDate = new Date(link.timetable_change_date + 'T00:00:00');
+  if (dt >= changeDate && day.type === 'SHIFT') {
+    const wkNum = shiftedWeekIdx + 1;
+    return { type: wkNum % 2 === 1 ? 'LATE' : 'EARLY' };
+  }
+  return day;
+}
+
+function getShiftPerm(dateKey, linkName, lineA, lineB) {
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const cl = link.cycle_length;
+  const wi = weekIndexFromAnchor(dateKey);
+  if (wi === null) return null;
+  // Alternate: even weeks-from-anchor use Line A, odd use Line B
+  const line = wi % 2 === 0 ? lineA : lineB;
+  return getShift(dateKey, linkName, line);
+}
+
+function getActiveShift(dateKey) {
+  const permOn = document.getElementById('perm-toggle').checked;
+  const link = linkSel.value;
+  if (permOn) {
+    const la = parseInt(document.getElementById('line-a-sel').value);
+    const lb = parseInt(document.getElementById('line-b-sel').value);
+    return getShiftPerm(dateKey, link, la, lb);
+  }
+  return getShift(dateKey, link, parseInt(lineSel.value));
+}
+
+function getActiveWkNum(dateKey) {
+  const permOn = document.getElementById('perm-toggle').checked;
+  const linkName = linkSel.value;
+  if (permOn) {
+    const wi = weekIndexFromAnchor(dateKey);
+    if (wi === null) return null;
+    const la = parseInt(document.getElementById('line-a-sel').value);
+    const lb = parseInt(document.getElementById('line-b-sel').value);
+    const line = wi % 2 === 0 ? la : lb;
+    return wkNumForLine(dateKey, linkName, line);
+  }
+  return getWkNum(dateKey, linkName, parseInt(lineSel.value));
+}
+
+function getShift(dateKey, linkName, line) {
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const anchor = new Date(link.wk1_anchor + 'T00:00:00');
+  const dt = new Date(dateKey + 'T00:00:00');
+  const dayOfWeek = dt.getDay();
+  const diffDays = Math.round((dt - anchor) / 86400000);
+  if (diffDays < 0) return null;
+  const weekFromAnchor = Math.floor(diffDays / 7);
+  const cycleLen = link.cycle_length;
+  const shiftedWeekIdx = (weekFromAnchor + (line - 1)) % cycleLen;
+  const weekData = link.weeks[shiftedWeekIdx];
+  if (!weekData) return null;
+  const day = weekData[DAY_NAMES[dayOfWeek]];
+  if (!day) return null;
+  const changeDate = new Date(link.timetable_change_date + 'T00:00:00');
+  if (dt >= changeDate && day.type === 'SHIFT') {
+    const wkNum = shiftedWeekIdx + 1;
+    return { type: wkNum % 2 === 1 ? 'LATE' : 'EARLY' };
+  }
+  return day;
+}
+
+function getWkNum(dateKey, linkName, line) {
+  return wkNumForLine(dateKey, linkName, line);
+}
+
+function renderCalendar() {
+  if (!ROSTER_DATA) return;
+  document.getElementById('month-label').textContent = `${MONTHS[viewMonth]} ${viewYear}`;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  DAY_LABELS.forEach(l => { const el = document.createElement('div'); el.className = 'day-label'; el.textContent = l; grid.appendChild(el); });
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  for (let i = 0; i < firstDay; i++) { const el = document.createElement('div'); el.className = 'day-cell empty'; grid.appendChild(el); }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const k = `${viewYear}-${pad(viewMonth+1)}-${pad(d)}`;
+    const shift = getActiveShift(k);
+    const el = document.createElement('div');
+    el.textContent = d;
+    let cls = 'day-cell';
+    if (!shift) cls += ' out-range';
+    else if (shift.type === 'RD') cls += ' is-rd';
+    if (k === selectedKey) cls += ' selected';
+    if (k === todayKey) cls += ' today-cell';
+    el.className = cls;
+    if (PAYDAYS.has(k)) { const dot = document.createElement('div'); dot.className = 'payday-dot'; el.appendChild(dot); }
+    if (shift) { el.addEventListener('click', () => { selectedKey = k; renderCalendar(); renderResult(); }); }
+    grid.appendChild(el);
+  }
+}
+
+function adjHTML(label, key) {
+  const dt = new Date(key + 'T00:00:00');
+  const dayName = dt.toLocaleDateString('en-GB', {weekday:'long'});
+  const dispDate = dt.toLocaleDateString('en-GB', {day:'numeric', month:'short'});
+  const shift = getActiveShift(key);
+  if (!shift) return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">Outside roster</p></div>`;
+  if (shift.type === 'RD') return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type rd">Rest day</p></div>`;
+  if (shift.type === 'EARLY' || shift.type === 'LATE') return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">${shift.type === 'EARLY' ? 'Early' : 'Late'} shift</p></div>`;
+  return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-turn">${shift.turn}</p><p class="adj-times">${shift.start} – ${shift.end} · ${shift.length}</p></div>`;
+}
+
+function renderResult() {
+  if (!ROSTER_DATA) return;
+  const rc = document.getElementById('result-card');
+  if (!selectedKey) { rc.innerHTML = '<p class="placeholder">Select a date to view shift details.</p>'; return; }
+  const shift = getActiveShift(selectedKey);
+  if (!shift) { rc.innerHTML = '<p class="placeholder">Date outside roster range.</p>'; return; }
+  const dt = new Date(selectedKey + 'T00:00:00');
+  const dayName = dt.toLocaleDateString('en-GB', {weekday:'long'});
+  const dispDate = dt.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+  const wkNum = getActiveWkNum(selectedKey);
+  const prevKey = dateStr(new Date(dt.getTime() - 86400000));
+  const nextKey = dateStr(new Date(dt.getTime() + 86400000));
+  let mainHTML = '';
+  if (shift.type === 'RD') mainHTML = `<div class="type-block rd">Rest day</div>`;
+  else if (shift.type === 'EARLY') mainHTML = `<div class="type-block">Early shift</div>`;
+  else if (shift.type === 'LATE') mainHTML = `<div class="type-block">Late shift</div>`;
+  else mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}">${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`;
+  const paydayHTML = PAYDAYS.has(selectedKey) ? `<p class="payday-note">&#x1F4B7; Payday</p>` : '';
+  const specialHTML = SPECIAL_DAYS[selectedKey] ? `<p class="special-note">${SPECIAL_DAYS[selectedKey]}</p>` : '';
+  rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${paydayHTML}${specialHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>`;
+}
+
+document.getElementById('prev-btn').addEventListener('click', () => { viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar(); });
+document.getElementById('next-btn').addEventListener('click', () => { viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(); });
+document.getElementById('today-btn').addEventListener('click', () => {
+  viewYear = _now.getFullYear(); viewMonth = _now.getMonth();
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+document.getElementById('next-turn-btn').addEventListener('click', () => {
+  const start = new Date(_now.getTime() + 86400000);
+  let found = null;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(start.getTime() + i * 86400000);
+    const k = dateStr(d);
+    const shift = getActiveShift(k);
+    if (shift && shift.type !== 'RD') { found = { key: k, year: d.getFullYear(), month: d.getMonth() }; break; }
+  }
+  if (found) { viewYear = found.year; viewMonth = found.month; selectedKey = found.key; renderCalendar(); renderResult(); }
+});
+
+function getLineWkParity(linkName, line) {
+  // Return 'even' or 'odd' for the week this line is on at the anchor date 12/04/26
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const wk = ((0 + (line - 1)) % link.cycle_length) + 1; // weekFromAnchor=0 on 12/04/26
+  return wk % 2 === 0 ? 'even' : 'odd';
+}
+
+function populateLines() {
+  const linkName = linkSel.value;
+  const link = ROSTER_DATA[linkName];
+  const cl = link.cycle_length;
+
+  // Standard line dropdown
+  lineSel.innerHTML = '';
+  for (let i = 1; i <= cl; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = `Line ${i}`;
+    lineSel.appendChild(o);
+  }
+  const savedLine = parseInt(localStorage.getItem('rosterLine_' + linkName)) || 1;
+  lineSel.value = (savedLine >= 1 && savedLine <= cl) ? savedLine : 1;
+
+  // Line A dropdown
+  const lineASel = document.getElementById('line-a-sel');
+  lineASel.innerHTML = '';
+  for (let i = 1; i <= cl; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = `Line ${i}`;
+    lineASel.appendChild(o);
+  }
+  const savedA = parseInt(localStorage.getItem('permLineA_' + linkName)) || 1;
+  lineASel.value = (savedA >= 1 && savedA <= cl) ? savedA : 1;
+
+  populateLineB();
+}
+
+function populateLineB() {
+  const linkName = linkSel.value;
+  const link = ROSTER_DATA[linkName];
+  const cl = link.cycle_length;
+  const lineA = parseInt(document.getElementById('line-a-sel').value);
+  const parityA = getLineWkParity(linkName, lineA);
+  // Line B must match same parity as Line A
+  const lineBSel = document.getElementById('line-b-sel');
+  lineBSel.innerHTML = '';
+  for (let i = 1; i <= cl; i++) {
+    const p = getLineWkParity(linkName, i);
+    if (p !== parityA) {
+      const o = document.createElement('option');
+      o.value = i; o.textContent = `Line ${i}`;
+      lineBSel.appendChild(o);
+    }
+  }
+  const savedB = parseInt(localStorage.getItem('permLineB_' + linkName));
+  if (savedB && lineBSel.querySelector(`option[value="${savedB}"]`)) {
+    lineBSel.value = savedB;
+  }
+}
+
+linkSel.addEventListener('change', () => {
+  localStorage.setItem('rosterLink', linkSel.value);
+  populateLines();
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+lineSel.addEventListener('change', () => {
+  localStorage.setItem('rosterLine_' + linkSel.value, lineSel.value);
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+
+document.getElementById('perm-toggle').addEventListener('change', function() {
+  localStorage.setItem('permMode', this.checked ? '1' : '0');
+  document.getElementById('standard-line-row').style.display = this.checked ? 'none' : '';
+  document.getElementById('perm-rows').classList.toggle('visible', this.checked);
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+
+document.getElementById('line-a-sel').addEventListener('change', function() {
+  localStorage.setItem('permLineA_' + linkSel.value, this.value);
+  populateLineB();
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+document.getElementById('line-b-sel').addEventListener('change', function() {
+  localStorage.setItem('permLineB_' + linkSel.value, this.value);
+  selectedKey = todayKey;
+  renderCalendar(); renderResult();
+});
+
+async function init() {
+  try {
+    const response = await fetch('roster.json');
+    if (!response.ok) throw new Error('Failed to load roster.json');
+    ROSTER_DATA = await response.json();
+    const linkNames = Object.keys(ROSTER_DATA);
+    linkNames.forEach(name => {
+      const o = document.createElement('option');
+      o.value = name; o.textContent = name;
+      linkSel.appendChild(o);
+    });
+    const savedLink = localStorage.getItem('rosterLink') || 'Link 1A';
+    linkSel.value = linkNames.includes(savedLink) ? savedLink : linkNames[0];
+    populateLines();
+    // Restore perm mode toggle
+    const permSaved = localStorage.getItem('permMode') === '1';
+    const permToggle = document.getElementById('perm-toggle');
+    permToggle.checked = permSaved;
+    document.getElementById('standard-line-row').style.display = permSaved ? 'none' : '';
+    document.getElementById('perm-rows').classList.toggle('visible', permSaved);
+
+    renderCalendar();
+    renderResult();
+  } catch(e) {
+    document.getElementById('result-card').innerHTML = '<p class="placeholder">Could not load roster data. Please check roster.json is uploaded.</p>';
+    console.error(e);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
