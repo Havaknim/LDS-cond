@@ -7,38 +7,18 @@
 <link rel="icon" href="favicon.png" sizes="any"><link rel="apple-touch-icon" href="favicon.png">
 <style>
 :root {
-  --bg: #f0f2f5;
-  --card: #ffffff;
-  --text: #1a1a2e;
-  --text-muted: #888;
-  --text-hint: #bbb;
-  --border: #e8eaed;
-  --metric-bg: #f7f8fa;
-  --nav-bg: #f0f2f5;
-  --nav-hover: #e0e3e8;
-  --accent: #6c5ce7;
-  --accent-light: #ede9ff;
-  --accent-text: #6c5ce7;
-  --rd-color: #74b9ff;
-  --ar-color: #00b894;
+  --bg: #f0f2f5; --card: #ffffff; --text: #1a1a2e; --text-muted: #888; --text-hint: #bbb;
+  --border: #e8eaed; --metric-bg: #f7f8fa; --nav-bg: #f0f2f5; --nav-hover: #e0e3e8;
+  --accent: #6c5ce7; --accent-light: #ede9ff; --accent-text: #6c5ce7;
+  --rd-color: #74b9ff; --ar-color: #00b894; --al-border: #f9ca24;
   --shadow: 0 2px 12px rgba(0,0,0,0.08);
   --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 [data-theme="dark"] {
-  --bg: #0f0f17;
-  --card: #1a1a2a;
-  --text: #e8e8f0;
-  --text-muted: #888;
-  --text-hint: #555;
-  --border: #2a2a3a;
-  --metric-bg: #22223a;
-  --nav-bg: #22223a;
-  --nav-hover: #2e2e48;
-  --accent: #a29bfe;
-  --accent-light: #2d2a4a;
-  --accent-text: #a29bfe;
-  --rd-color: #74b9ff;
-  --ar-color: #55efc4;
+  --bg: #0f0f17; --card: #1a1a2a; --text: #e8e8f0; --text-muted: #888; --text-hint: #555;
+  --border: #2a2a3a; --metric-bg: #22223a; --nav-bg: #22223a; --nav-hover: #2e2e48;
+  --accent: #a29bfe; --accent-light: #2d2a4a; --accent-text: #a29bfe;
+  --rd-color: #74b9ff; --ar-color: #55efc4; --al-border: #f9ca24;
   --shadow: 0 2px 16px rgba(0,0,0,0.4);
   --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -47,14 +27,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .container { width: 100%; max-width: 420px; }
 .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
 h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
-.dark-btn { width: 36px; height: 36px; border: 1.5px solid var(--border); background: var(--card); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
-.dark-btn:hover { background: var(--nav-bg); }
+.top-btns { display: flex; gap: 8px; }
+.icon-btn { width: 36px; height: 36px; border: 1.5px solid var(--border); background: var(--card); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.15s; flex-shrink: 0; }
+.icon-btn:hover { background: var(--nav-bg); }
 .selectors-card { background: var(--card); border-radius: 16px; padding: 1rem 1.25rem; box-shadow: var(--shadow); margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 10px; }
 .sel-row { display: flex; align-items: center; gap: 10px; }
 .sel-row label { font-size: 13px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; min-width: 80px; }
 .sel-row select { flex: 1; padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: var(--metric-bg); cursor: pointer; appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 10px center; transition: border-color 0.15s, background 0.2s; }
 .sel-row select:focus { outline: none; border-color: var(--accent); }
 .save-hint { font-size: 11px; color: var(--text-hint); text-align: right; margin-top: -2px; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding-top: 4px; border-top: 1px solid var(--border); }
+.toggle-label { font-size: 13px; color: var(--text-muted); }
+.toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 24px; cursor: pointer; transition: background 0.2s; }
+.toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
+.toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+.perm-rows { display: none; flex-direction: column; gap: 10px; }
+.perm-rows.visible { display: flex; }
+.perm-line-label { font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+.perm-line-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.perm-line-pair select { width: 100%; padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: var(--metric-bg); cursor: pointer; appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 10px center; }
+.perm-line-pair select:focus { outline: none; border-color: var(--accent); }
 .cal-card { background: var(--card); border-radius: 16px; padding: 1.25rem; box-shadow: var(--shadow); margin-bottom: 0.75rem; }
 .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 8px; }
 .cal-header h2 { font-size: 16px; font-weight: 600; color: var(--text); }
@@ -69,6 +64,10 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .day-cell.today-cell:not(.selected)::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
 .day-cell.is-rd:not(.selected):not(.out-range) { color: var(--rd-color); }
 .day-cell.is-ar:not(.selected):not(.out-range) { color: var(--ar-color); }
+.day-cell.is-al { box-shadow: inset 0 0 0 2px var(--al-border); border-radius: 8px; }
+.day-cell.selected.is-al { box-shadow: inset 0 0 0 2px rgba(249,202,36,0.7); }
+.payday-dot { position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #f9ca24; }
+.day-cell.selected .payday-dot { background: rgba(255,255,255,0.8); }
 .jump-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; }
 .jump-label { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
 .jump-btn { height: 32px; padding: 0 14px; border: none; background: var(--accent-light); border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--accent-text); transition: opacity 0.15s; white-space: nowrap; }
@@ -92,53 +91,74 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .adj-type { font-size: 13px; font-weight: 500; color: var(--text); }
 .adj-type.rd { color: var(--rd-color); }
 .adj-type.ar { color: var(--ar-color); }
-.payday-dot { position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #f9ca24; }
-.day-cell.selected .payday-dot { background: #fff; }
-.payday-note { font-size: 12px; color: #c9a500; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
-[data-theme="dark"] .payday-note { color: #f9ca24; }
+.badges-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; margin-bottom: 0; }
+.badge { font-size: 12px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+.badge.payday { background: #fff8dc; color: #b8860b; }
+[data-theme="dark"] .badge.payday { background: #2a2010; color: #f9ca24; }
+.badge.al { background: #fff8dc; color: #b8860b; border: 1px solid var(--al-border); }
+[data-theme="dark"] .badge.al { background: #2a2010; color: #f9ca24; }
+.al-btn { width: 100%; margin-top: 10px; padding: 9px; border: 1.5px solid var(--border); background: transparent; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+.al-btn:hover { border-color: var(--al-border); color: #b8860b; }
+.al-btn.active { background: #fff8dc; border-color: var(--al-border); color: #b8860b; }
+[data-theme="dark"] .al-btn.active { background: #2a2010; color: #f9ca24; }
 .special-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
-.placeholder { color: var(--text-hint); font-size: 14px; text-align: center; padding: 0.5rem 0; }
 .timetable-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; padding: 8px 10px; background: var(--metric-bg); border-radius: 8px; border-left: 3px solid var(--border); font-style: italic; }
-.toggle-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 2px; }
-.toggle-label { font-size: 13px; color: var(--text-muted); }
-.toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
-.toggle-switch input { opacity: 0; width: 0; height: 0; }
-.toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 24px; cursor: pointer; transition: background 0.2s; }
-.toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
-.toggle-switch input:checked + .toggle-slider { background: var(--accent); }
-.toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
-.perm-rows { display: none; flex-direction: column; gap: 10px; }
-.perm-rows.visible { display: flex; }
-.perm-line-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.perm-line-pair select { width: 100%; padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: var(--metric-bg); cursor: pointer; appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 10px center; transition: border-color 0.15s, background 0.2s; }
-.perm-line-pair select:focus { outline: none; border-color: var(--accent); }
-.perm-line-label { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
-.standard-line-row { display: flex; flex-direction: column; gap: 10px; }
+.placeholder { color: var(--text-hint); font-size: 14px; text-align: center; padding: 0.5rem 0; }
+.export-btn-wrap { margin-top: 1rem; text-align: center; }
+.export-main-btn { padding: 10px 24px; background: var(--metric-bg); border: 1.5px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: border-color 0.15s; }
+.export-main-btn:hover { border-color: var(--accent); color: var(--accent-text); }
+.export-tip { font-size: 11px; color: var(--text-hint); margin-top: 6px; }
+.modal h3 { font-size: 13px; font-weight: 600; color: var(--text); margin: 1rem 0 0.4rem; }
+.modal-section { border-top: 1px solid var(--border); padding-top: 0.75rem; margin-top: 0.75rem; }
+.modal label { font-size: 13px; color: var(--text-muted); }
+.date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.4rem; }
+.date-row input[type="date"] { width: 100%; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--text); background: var(--metric-bg); }
+.date-row input[type="date"]:focus { outline: none; border-color: var(--accent); }
+.check-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; cursor: pointer; }
+.check-row input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
+.check-row span { font-size: 13px; color: var(--text-muted); }
+.colour-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.4rem; }
+.colour-item { display: flex; flex-direction: column; gap: 4px; }
+.colour-item label { font-size: 12px; color: var(--text-muted); }
+.colour-swatches { display: flex; gap: 4px; flex-wrap: wrap; }
+.swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.12s; flex-shrink: 0; }
+.swatch.selected { border-color: var(--text); }
+.simple-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.4rem; }
+.simple-toggle-label { font-size: 13px; color: var(--text-muted); }
+.colour-note { font-size: 11px; color: var(--text-hint); font-style: italic; margin-top: 0.4rem; }
+.export-dl-btn { width: 100%; margin-top: 1rem; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.export-dl-btn:hover { opacity: 0.9; }
+
+
+/* Modal overlay */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.hidden { display: none; }
+.modal { background: var(--card); border-radius: 16px; padding: 1.5rem; max-width: 380px; width: 100%; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.modal h2 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 1rem; }
+.modal h3 { font-size: 13px; font-weight: 600; color: var(--text); margin: 1rem 0 0.25rem; }
+.modal p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.5rem; }
+.modal-close { width: 100%; margin-top: 1rem; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.modal-close:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="top-bar">
     <h1>Leeds Conductor Roster</h1>
-    <button class="dark-btn" id="dark-btn" title="Toggle dark mode">🌙</button>
+    <div class="top-btns">
+      <button class="icon-btn" id="help-btn" title="Help">❓</button>
+      <button class="icon-btn" id="dark-btn" title="Toggle dark mode">🌙</button>
+    </div>
   </div>
 
   <div class="selectors-card" id="selectors-card">
-    <div class="toggle-row" id="toggle-row">
-      <span class="toggle-label">Permanent Earlies / Lates</span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="perm-toggle">
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-
     <div class="sel-row">
       <label for="link-sel">Link</label>
       <select id="link-sel"></select>
     </div>
-    <div class="standard-line-row" id="standard-line-row">
+    <div id="standard-line-row">
       <div class="sel-row">
-        <label for="line-sel">Your line as of W/C 12/04/26:</label>
+        <label for="line-sel">Your line as of W/C 17/05/26:</label>
         <select id="line-sel"></select>
       </div>
     </div>
@@ -151,12 +171,19 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
         </select>
       </div>
       <div>
-        <p class="perm-line-label">Alternating lines as of W/C 12/04/26:</p>
+        <p class="perm-line-label">Lines alternating as of W/C 17/05/26:</p>
         <div class="perm-line-pair">
           <select id="line-a-sel"></select>
           <select id="line-b-sel"></select>
         </div>
       </div>
+    </div>
+    <div class="toggle-row" id="toggle-row">
+      <span class="toggle-label">Permanent Earlies / Lates</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="perm-toggle">
+        <span class="toggle-slider"></span>
+      </label>
     </div>
     <p class="save-hint">Your selections are saved automatically</p>
   </div>
@@ -179,20 +206,110 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
   <div class="result-card" id="result-card">
     <p class="placeholder">Select a date to view shift details.</p>
   </div>
+
+
+</div>
+
+<!-- Export Modal -->
+<div class="modal-overlay hidden" id="export-modal">
+  <div class="modal">
+    <h2>Export to Calendar</h2>
+
+    <div class="modal-section">
+      <h3>Date range</h3>
+      <div class="date-row">
+        <div><label>From</label><input type="date" id="exp-from" value="2026-05-17" min="2026-04-12"></div>
+        <div><label>To</label><input type="date" id="exp-to" value="2026-12-12"></div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3>Export mode</h3>
+      <div class="simple-toggle-row">
+        <span class="simple-toggle-label">Simple mode (Early / Late only)</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="exp-simple">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3>Include</h3>
+      <label class="check-row"><input type="checkbox" id="exp-shifts" checked><span>Turns of duty</span></label>
+      <label class="check-row"><input type="checkbox" id="exp-rd"><span>Rest days</span></label>
+      <label class="check-row"><input type="checkbox" id="exp-al" checked><span>Annual leave</span></label>
+      <label class="check-row"><input type="checkbox" id="exp-pay"><span>Paydays</span></label>
+    </div>
+
+    <div class="modal-section">
+      <h3>Colours</h3>
+      <p class="colour-note">Colour support varies between calendar apps and may not display on all devices.</p>
+      <div class="colour-grid" id="colour-grid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <button class="export-dl-btn" id="exp-download-btn">Download .ics file</button>
+    <button class="modal-close" id="export-close" style="background:var(--metric-bg);color:var(--text-muted);margin-top:8px;">Cancel</button>
+  </div>
+</div>
+
+<!-- Disclaimer Modal -->
+<div class="modal-overlay hidden" id="disclaimer-modal">
+  <div class="modal">
+    <p style="font-size:13px;color:var(--text-muted);font-style:italic;margin-bottom:0.75rem;">I know it's daft and way over the top, but somebody somewhere will find a way to make it my fault, so...</p>
+    <h2>Disclaimer</h2>
+    <p>This page was created by James Haigh as a personal tool and is shared freely in the hope that others may find it useful. It is an unofficial resource.</p>
+    <p>The shift information displayed is based on the timetable effective from 17th May 2026 until 12th December 2026. This page reflects the working timetable only and does not include Short Term Planning (STP) alterations or any other short notice changes. It will not be updated in real time to reflect emergency alterations or any other amendments made after publication. As outlined in the CRI, conductors must continue to check the daily appearance sheets before each turn of duty. This page should be used as a guide only and does not replace any official rostering or scheduling system.</p>
+    <p>Whilst I've made every effort to ensure the accuracy of the information displayed, conductors are responsible for verifying that the details shown match their own roster. I accept no responsibility for any errors, omissions, or issues arising from the use of this page, including but not limited to missed turns, incorrect working, or any consequential loss.</p>
+    <p><strong>Data &amp; Privacy</strong><br>This page does not collect, store, or transmit any personal data. All preferences, including your selected link, line, and any annual leave entries, are stored locally on your own device and are never shared with or accessible by anyone else.</p>
+    <p style="font-size:12px;color:var(--text-hint);font-style:italic;">Use of this page is entirely at your own risk.</p>
+    <button class="modal-close" id="disclaimer-close">I understand</button>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal-overlay hidden" id="help-modal">
+  <div class="modal">
+    <h2>Leeds Conductor Roster — Help</h2>
+    <h3>Getting started</h3>
+    <p>This page shows your shift details based on your link and line number. Your selections are saved automatically on this device, so you won't need to re-enter them each time you visit.</p>
+    <h3>Using the calendar</h3>
+    <p>Tap any date to see your shift details, including start time, finish time, turn number, and shift length. Use the arrows to move between months. A small yellow dot in the corner of a date indicates a payday. The Jump to section below the calendar lets you jump straight back to today, or skip forward to your next working day.</p>
+    <h3>Permanent Earlies / Lates</h3>
+    <p>If you're doing a permanent earlies or lates swap with another conductor, toggle this on and select whether you're doing earlies or lates. Then enter the two lines you're alternating between in either order and the calendar will automatically show the correct work for each week.</p>
+    <h3>Annual Leave</h3>
+    <p>When viewing a date in the shift details, press the Annual Leave button to mark that day as A/L. It will appear with a yellow border on the calendar. Your annual leave is saved on this device only — it won't sync if you use a different device or browser, and clearing your browser history or cache will remove it.</p>
+    <button class="modal-close" id="help-close">Got it</button>
+  </div>
 </div>
 
 <script>
 const PAYDAYS = new Set(["2026-04-10","2026-05-08","2026-06-05","2026-07-03","2026-07-31","2026-08-28","2026-09-25","2026-10-23","2026-11-20","2026-12-18","2027-01-15","2027-02-12","2027-03-12","2027-04-09","2027-05-07","2027-06-04","2027-07-02","2027-07-30","2027-08-27","2027-09-24","2027-10-22","2027-11-19","2027-12-17","2028-01-14","2028-02-11","2028-03-10","2028-04-07","2028-05-05","2028-06-02","2028-06-30","2028-07-28","2028-08-25","2028-09-22","2028-10-20","2028-11-17","2028-12-15","2029-01-12","2029-02-09","2029-03-09","2029-04-06"]);
 const SPECIAL_DAYS = {"2026-12-25":"Public holiday \u2014 not required to work","2026-12-26":"Public holiday \u2014 not required to work","2027-12-25":"Public holiday \u2014 not required to work","2027-12-26":"Public holiday \u2014 not required to work","2028-12-25":"Public holiday \u2014 not required to work","2028-12-26":"Public holiday \u2014 not required to work","2029-12-25":"Public holiday \u2014 not required to work","2029-12-26":"Public holiday \u2014 not required to work"};
-
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAY_LABELS = ["Su","Mo","Tu","We","Th","Fr","Sa"];
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const NEW_ANCHOR = new Date('2026-05-17T00:00:00');
+const OLD_ANCHOR = new Date('2026-04-12T00:00:00');
+const VALID_UNTIL = new Date('2026-12-12T00:00:00');
+const WEEKS_OFFSET = 5; // new_line = old_line + 5
 
 function pad(n) { return String(n).padStart(2,'0'); }
 function dateStr(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
 
-// Dark mode — auto dark for first-time visitors
+// Annual leave - stored globally regardless of link/line
+function getAL() { try { return JSON.parse(localStorage.getItem('annualLeave') || '[]'); } catch(e) { return []; } }
+function isAL(dateKey) { return getAL().includes(dateKey); }
+function toggleAL(dateKey) {
+  const al = getAL();
+  const idx = al.indexOf(dateKey);
+  if (idx === -1) al.push(dateKey); else al.splice(idx, 1);
+  localStorage.setItem('annualLeave', JSON.stringify(al));
+}
+
+// Dark mode
 const darkBtn = document.getElementById('dark-btn');
 const savedTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -205,6 +322,18 @@ darkBtn.addEventListener('click', () => {
   localStorage.setItem('theme', next);
 });
 
+// Help modal
+const helpModal = document.getElementById('help-modal');
+document.getElementById('help-btn').addEventListener('click', () => helpModal.classList.remove('hidden'));
+document.getElementById('help-close').addEventListener('click', () => { helpModal.classList.add('hidden'); localStorage.setItem('helpSeen', '1'); });
+helpModal.addEventListener('click', e => { if (e.target === helpModal) { helpModal.classList.add('hidden'); localStorage.setItem('helpSeen', '1'); } });
+document.getElementById('disclaimer-close').addEventListener('click', () => {
+  document.getElementById('disclaimer-modal').classList.add('hidden');
+  localStorage.setItem('disclaimerSeen', '1');
+  // Show help popup after disclaimer if not yet seen
+  if (!localStorage.getItem('helpSeen')) helpModal.classList.remove('hidden');
+});
+
 const linkSel = document.getElementById('link-sel');
 const lineSel = document.getElementById('line-sel');
 const _now = new Date();
@@ -213,60 +342,78 @@ let viewYear = _now.getFullYear(), viewMonth = _now.getMonth();
 let selectedKey = todayKey;
 let ROSTER_DATA = null;
 
-// ── Perm mode helpers ────────────────────────────────────────────────────────
-const ANCHOR_DATE = new Date('2026-04-12T00:00:00');
-
-function weekIndexFromAnchor(dateKey) {
-  const dt = new Date(dateKey + 'T00:00:00');
-  const diff = Math.round((dt - ANCHOR_DATE) / 86400000);
-  return diff < 0 ? null : Math.floor(diff / 7);
-}
-
-function wkNumForLine(dateKey, linkName, line) {
+function getShift(dateKey, linkName, newLine) {
   const link = ROSTER_DATA[linkName];
   if (!link) return null;
-  const wi = weekIndexFromAnchor(dateKey);
-  if (wi === null) return null;
-  return ((wi + (line - 1)) % link.cycle_length) + 1;
-}
-
-// In perm mode, alternate: even weeks-from-anchor = Line A, odd = Line B
-function getEffectiveLine(weekFromAnchor, lineA, lineB) {
-  return weekFromAnchor % 2 === 0 ? lineA : lineB;
-}
-
-function getShift(dateKey, linkName, line) {
-  const link = ROSTER_DATA[linkName];
-  if (!link) return null;
-  const anchor = new Date(link.wk1_anchor + 'T00:00:00');
   const dt = new Date(dateKey + 'T00:00:00');
-  const dayOfWeek = dt.getDay();
-  const diffDays = Math.round((dt - anchor) / 86400000);
-  if (diffDays < 0) return null;
-  const weekFromAnchor = Math.floor(diffDays / 7);
-  const cycleLen = link.cycle_length;
-  const shiftedWeekIdx = (weekFromAnchor + (line - 1)) % cycleLen;
-  const weekData = link.weeks[shiftedWeekIdx];
-  if (!weekData) return null;
-  const day = weekData[DAY_NAMES[dayOfWeek]];
-  if (!day) return null;
-  const changeDate = new Date(link.timetable_change_date + 'T00:00:00');
-  if (dt >= changeDate && day.type === 'SHIFT') {
-    const wkNum = shiftedWeekIdx + 1;
-    return { type: wkNum % 2 === 1 ? 'LATE' : 'EARLY' };
+  const dow = dt.getDay();
+  const dayName = DAY_NAMES[dow];
+  const cl = link.cycle_length;
+
+  if (dt >= NEW_ANCHOR) {
+    // New timetable
+    const diffDays = Math.round((dt - NEW_ANCHOR) / 86400000);
+    const wi = Math.floor(diffDays / 7);
+    const shifted = (wi + (newLine - 1)) % cl;
+    const day = link.new_weeks[shifted][dayName];
+    if (!day) return null;
+    // After valid_until: EARLY/LATE only
+    if (dt > VALID_UNTIL && day.type === 'SHIFT') {
+      const wk = shifted + 1;
+      return { type: wk % 2 === 1 ? 'LATE' : 'EARLY' };
+    }
+    return day;
+  } else {
+    // Old timetable - derive old line from new line
+    const oldLine = ((newLine - 1 - WEEKS_OFFSET) % cl + cl) % cl + 1;
+    const diffDays = Math.round((dt - OLD_ANCHOR) / 86400000);
+    if (diffDays < 0) return null;
+    const wi = Math.floor(diffDays / 7);
+    const shifted = (wi + (oldLine - 1)) % cl;
+    const day = link.old_weeks[shifted][dayName];
+    return day || null;
   }
-  return day;
+}
+
+function getWkNum(dateKey, linkName, newLine) {
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const dt = new Date(dateKey + 'T00:00:00');
+  const cl = link.cycle_length;
+  if (dt >= NEW_ANCHOR) {
+    const wi = Math.floor(Math.round((dt - NEW_ANCHOR) / 86400000) / 7);
+    return ((wi + (newLine - 1)) % cl) + 1;
+  } else {
+    const oldLine = ((newLine - 1 - WEEKS_OFFSET) % cl + cl) % cl + 1;
+    const wi = Math.floor(Math.round((dt - OLD_ANCHOR) / 86400000) / 7);
+    return ((wi + (oldLine - 1)) % cl) + 1;
+  }
+}
+
+function getLineWkParity(linkName, newLine) {
+  // Parity of new line on new anchor date (17/05/26)
+  const link = ROSTER_DATA[linkName];
+  if (!link) return null;
+  const wk = ((newLine - 1) % link.cycle_length) + 1;
+  return wk % 2 === 0 ? 'even' : 'odd';
 }
 
 function getShiftPerm(dateKey, linkName, lineA, lineB) {
   const link = ROSTER_DATA[linkName];
   if (!link) return null;
   const cl = link.cycle_length;
-  const wi = weekIndexFromAnchor(dateKey);
-  if (wi === null) return null;
+  const dt = new Date(dateKey + 'T00:00:00');
   const permType = document.getElementById('perm-type-sel').value;
-  // Pick whichever line is on the correct shift type that week
-  const wkA = ((wi + (lineA - 1)) % cl) + 1;
+  // Determine week number for lineA on this date
+  let wkA;
+  if (dt >= NEW_ANCHOR) {
+    const wi = Math.floor(Math.round((dt - NEW_ANCHOR) / 86400000) / 7);
+    wkA = ((wi + (lineA - 1)) % cl) + 1;
+  } else {
+    const oldLineA = ((lineA - 1 - WEEKS_OFFSET) % cl + cl) % cl + 1;
+    const wi = Math.floor(Math.round((dt - OLD_ANCHOR) / 86400000) / 7);
+    wkA = ((wi + (oldLineA - 1)) % cl) + 1;
+  }
   const lineAIsCorrect = permType === 'early' ? wkA % 2 === 0 : wkA % 2 === 1;
   const line = lineAIsCorrect ? lineA : lineB;
   return getShift(dateKey, linkName, line);
@@ -290,44 +437,24 @@ function getActiveWkNum(dateKey) {
     const link = ROSTER_DATA[linkName];
     if (!link) return null;
     const cl = link.cycle_length;
-    const wi = weekIndexFromAnchor(dateKey);
-    if (wi === null) return null;
+    const dt = new Date(dateKey + 'T00:00:00');
     const la = parseInt(document.getElementById('line-a-sel').value);
     const lb = parseInt(document.getElementById('line-b-sel').value);
     const permType = document.getElementById('perm-type-sel').value;
-    const wkA = ((wi + (la - 1)) % cl) + 1;
-    const lineAIsCorrect = permType === 'early' ? wkA % 2 === 0 : wkA % 2 === 1;
-    const line = lineAIsCorrect ? la : lb;
-    return wkNumForLine(dateKey, linkName, line);
+    let wkA;
+    if (dt >= NEW_ANCHOR) {
+      const wi = Math.floor(Math.round((dt - NEW_ANCHOR) / 86400000) / 7);
+      wkA = ((wi + (la - 1)) % cl) + 1;
+    } else {
+      const oldLA = ((la - 1 - WEEKS_OFFSET) % cl + cl) % cl + 1;
+      const wi = Math.floor(Math.round((dt - OLD_ANCHOR) / 86400000) / 7);
+      wkA = ((wi + (oldLA - 1)) % cl) + 1;
+    }
+    const useA = permType === 'early' ? wkA % 2 === 0 : wkA % 2 === 1;
+    const line = useA ? la : lb;
+    return getWkNum(dateKey, linkName, line);
   }
   return getWkNum(dateKey, linkName, parseInt(lineSel.value));
-}
-
-function getShift(dateKey, linkName, line) {
-  const link = ROSTER_DATA[linkName];
-  if (!link) return null;
-  const anchor = new Date(link.wk1_anchor + 'T00:00:00');
-  const dt = new Date(dateKey + 'T00:00:00');
-  const dayOfWeek = dt.getDay();
-  const diffDays = Math.round((dt - anchor) / 86400000);
-  if (diffDays < 0) return null;
-  const weekFromAnchor = Math.floor(diffDays / 7);
-  const cycleLen = link.cycle_length;
-  const shiftedWeekIdx = (weekFromAnchor + (line - 1)) % cycleLen;
-  const weekData = link.weeks[shiftedWeekIdx];
-  if (!weekData) return null;
-  const day = weekData[DAY_NAMES[dayOfWeek]];
-  if (!day) return null;
-  const changeDate = new Date(link.timetable_change_date + 'T00:00:00');
-  if (dt >= changeDate && day.type === 'SHIFT') {
-    const wkNum = shiftedWeekIdx + 1;
-    return { type: wkNum % 2 === 1 ? 'LATE' : 'EARLY' };
-  }
-  return day;
-}
-
-function getWkNum(dateKey, linkName, line) {
-  return wkNumForLine(dateKey, linkName, line);
 }
 
 function renderCalendar() {
@@ -350,6 +477,7 @@ function renderCalendar() {
     else if (shift.type === 'SHIFT' && shift.turn === 'A/R') cls += ' is-ar';
     if (k === selectedKey) cls += ' selected';
     if (k === todayKey) cls += ' today-cell';
+    if (isAL(k)) cls += ' is-al';
     el.className = cls;
     if (PAYDAYS.has(k)) { const dot = document.createElement('div'); dot.className = 'payday-dot'; el.appendChild(dot); }
     if (shift) { el.addEventListener('click', () => { selectedKey = k; renderCalendar(); renderResult(); }); }
@@ -375,12 +503,9 @@ function renderResult() {
   if (!selectedKey) { rc.innerHTML = '<p class="placeholder">Select a date to view shift details.</p>'; return; }
   const shift = getActiveShift(selectedKey);
   if (!shift) {
-    // If today is outside roster range, find the nearest available date
-    if (selectedKey === todayKey) {
-      rc.innerHTML = '<p class="placeholder">Select a date to view shift details.</p>';
-    } else {
-      rc.innerHTML = '<p class="placeholder">Date outside roster range.</p>';
-    }
+    rc.innerHTML = selectedKey === todayKey
+      ? '<p class="placeholder">Select a date to view shift details.</p>'
+      : '<p class="placeholder">Date outside roster range.</p>';
     return;
   }
   const dt = new Date(selectedKey + 'T00:00:00');
@@ -391,57 +516,82 @@ function renderResult() {
   const nextKey = dateStr(new Date(dt.getTime() + 86400000));
   let mainHTML = '';
   if (shift.type === 'RD') mainHTML = `<div class="type-block rd">Rest day</div>`;
-  else if (shift.type === 'EARLY') mainHTML = `<div class="type-block">Early shift</div><p class="timetable-note">Job details aren't available for this date yet — the May timetable change hasn't been issued. Check back once the new diagrams are out.</p>`;
-  else if (shift.type === 'LATE') mainHTML = `<div class="type-block">Late shift</div><p class="timetable-note">Job details aren't available for this date yet — the May timetable change hasn't been issued. Check back once the new diagrams are out.</p>`;
-  else { const turnClass = shift.turn === 'A/R' ? ' style="color:var(--ar-color)"' : ''; mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}"${turnClass}>${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`; }
-  const paydayHTML = PAYDAYS.has(selectedKey) ? `<p class="payday-note">&#x1F4B7; Payday</p>` : '';
+  else if (shift.type === 'EARLY') mainHTML = `<div class="type-block">Early shift</div><p class="timetable-note">Detailed job information isn't available beyond 12th December 2026.</p>`;
+  else if (shift.type === 'LATE') mainHTML = `<div class="type-block">Late shift</div><p class="timetable-note">Detailed job information isn't available beyond 12th December 2026.</p>`;
+  else { const turnClass = shift.turn === 'A/R' ? ' style="color:var(--ar-color)"' : ''; mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}\"${turnClass}>${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`; }
+
+  // Badges row
+  const alActive = isAL(selectedKey);
+  const badgesHTML = (PAYDAYS.has(selectedKey) || alActive)
+    ? `<div class="badges-row">${PAYDAYS.has(selectedKey) ? '<span class="badge payday">💷 Payday</span>' : ''}${alActive ? '<span class="badge al">Annual Leave</span>' : ''}</div>`
+    : '';
+
   const specialHTML = SPECIAL_DAYS[selectedKey] ? `<p class="special-note">${SPECIAL_DAYS[selectedKey]}</p>` : '';
-  rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${paydayHTML}${specialHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>`;
+  const alBtnHTML = `<button class="al-btn${alActive ? ' active' : ''}" id="al-btn">${alActive ? '✓ Annual Leave marked' : 'Mark as Annual Leave'}</button>`;
+
+  rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${badgesHTML}${specialHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>${alBtnHTML}`;
+
+  document.getElementById('al-btn').addEventListener('click', () => {
+    toggleAL(selectedKey);
+    renderCalendar();
+    renderResult();
+  });
 }
 
 document.getElementById('prev-btn').addEventListener('click', () => { viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar(); });
 document.getElementById('next-btn').addEventListener('click', () => { viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(); });
 document.getElementById('today-btn').addEventListener('click', () => {
   viewYear = _now.getFullYear(); viewMonth = _now.getMonth();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  selectedKey = todayKey; renderCalendar(); renderResult();
 });
 document.getElementById('next-turn-btn').addEventListener('click', () => {
   const start = new Date(_now.getTime() + 86400000);
-  let found = null;
-  for (let i = 0; i < 365; i++) {
+  for (let i = 0; i < 400; i++) {
     const d = new Date(start.getTime() + i * 86400000);
     const k = dateStr(d);
     const shift = getActiveShift(k);
-    if (shift && shift.type !== 'RD') { found = { key: k, year: d.getFullYear(), month: d.getMonth() }; break; }
+    if (shift && shift.type !== 'RD') {
+      viewYear = d.getFullYear(); viewMonth = d.getMonth();
+      selectedKey = k; renderCalendar(); renderResult(); return;
+    }
   }
-  if (found) { viewYear = found.year; viewMonth = found.month; selectedKey = found.key; renderCalendar(); renderResult(); }
 });
 
-function getLineWkParity(linkName, line) {
-  // Return 'even' or 'odd' for the week this line is on at the anchor date 12/04/26
+function applyPermLayout(on) {
+  document.getElementById('standard-line-row').style.display = on ? 'none' : '';
+  document.getElementById('perm-rows').classList.toggle('visible', on);
+  const card = document.getElementById('selectors-card');
+  const toggleRow = document.getElementById('toggle-row');
+  const hint = card.querySelector('.save-hint');
+  if (on) card.insertBefore(toggleRow, card.firstChild);
+  else card.insertBefore(toggleRow, hint);
+}
+
+function getLineWkParityByLink(linkName, newLine) {
   const link = ROSTER_DATA[linkName];
   if (!link) return null;
-  const wk = ((0 + (line - 1)) % link.cycle_length) + 1; // weekFromAnchor=0 on 12/04/26
+  const wk = ((newLine - 1) % link.cycle_length) + 1;
   return wk % 2 === 0 ? 'even' : 'odd';
 }
 
-function populateLines() {
+function populateLineB() {
   const linkName = linkSel.value;
   const link = ROSTER_DATA[linkName];
   const cl = link.cycle_length;
-
-  // Standard line dropdown
-  lineSel.innerHTML = '';
+  const lineA = parseInt(document.getElementById('line-a-sel').value);
+  const parityA = getLineWkParityByLink(linkName, lineA);
+  const lineBSel = document.getElementById('line-b-sel');
+  const prevB = lineBSel.value;
+  lineBSel.innerHTML = '';
   for (let i = 1; i <= cl; i++) {
-    const o = document.createElement('option');
-    o.value = i; o.textContent = `Line ${i}`;
-    lineSel.appendChild(o);
+    if (getLineWkParityByLink(linkName, i) !== parityA) {
+      const o = document.createElement('option');
+      o.value = i; o.textContent = `Line ${i}`; lineBSel.appendChild(o);
+    }
   }
-  const savedLine = parseInt(localStorage.getItem('rosterLine_' + linkName)) || 1;
-  lineSel.value = (savedLine >= 1 && savedLine <= cl) ? savedLine : 1;
-
-  populateLineA();
+  const savedB = parseInt(localStorage.getItem('permLineB_' + linkName));
+  if (savedB && lineBSel.querySelector(`option[value="${savedB}"]`)) lineBSel.value = savedB;
+  else if (prevB && lineBSel.querySelector(`option[value="${prevB}"]`)) lineBSel.value = prevB;
 }
 
 function populateLineA() {
@@ -453,8 +603,7 @@ function populateLineA() {
   lineASel.innerHTML = '';
   for (let i = 1; i <= cl; i++) {
     const o = document.createElement('option');
-    o.value = i; o.textContent = `Line ${i}`;
-    lineASel.appendChild(o);
+    o.value = i; o.textContent = `Line ${i}`; lineASel.appendChild(o);
   }
   const savedA = parseInt(localStorage.getItem('permLineA_' + linkName));
   if (savedA && lineASel.querySelector(`option[value="${savedA}"]`)) lineASel.value = savedA;
@@ -462,115 +611,311 @@ function populateLineA() {
   populateLineB();
 }
 
-function populateLineB() {
-  const linkName = linkSel.value;
-  const link = ROSTER_DATA[linkName];
+function populateLines() {
+  const link = ROSTER_DATA[linkSel.value];
   const cl = link.cycle_length;
-  const lineA = parseInt(document.getElementById('line-a-sel').value);
-  const parityA = getLineWkParity(linkName, lineA);
-  const lineBSel = document.getElementById('line-b-sel');
-  const prevB = lineBSel.value;
-  lineBSel.innerHTML = '';
+  lineSel.innerHTML = '';
   for (let i = 1; i <= cl; i++) {
-    if (getLineWkParity(linkName, i) !== parityA) {
-      const o = document.createElement('option');
-      o.value = i; o.textContent = `Line ${i}`;
-      lineBSel.appendChild(o);
-    }
+    const o = document.createElement('option');
+    o.value = i; o.textContent = `Line ${i}`; lineSel.appendChild(o);
   }
-  const savedB = parseInt(localStorage.getItem('permLineB_' + linkName));
-  if (savedB && lineBSel.querySelector(`option[value="${savedB}"]`)) lineBSel.value = savedB;
-  else if (prevB && lineBSel.querySelector(`option[value="${prevB}"]`)) lineBSel.value = prevB;
+  const savedLine = parseInt(localStorage.getItem('rosterLine_' + linkSel.value)) || 1;
+  lineSel.value = (savedLine >= 1 && savedLine <= cl) ? savedLine : 1;
+  try { populateLineA(); } catch(e) { console.warn('populateLineA:', e); }
 }
 
 linkSel.addEventListener('change', () => {
   localStorage.setItem('rosterLink', linkSel.value);
-  populateLines();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  populateLines(); selectedKey = todayKey; renderCalendar(); renderResult();
 });
 lineSel.addEventListener('change', () => {
   localStorage.setItem('rosterLine_' + linkSel.value, lineSel.value);
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  selectedKey = todayKey; renderCalendar(); renderResult();
 });
-
-function applyPermLayout(on) {
-  document.getElementById('standard-line-row').style.display = on ? 'none' : '';
-  document.getElementById('perm-rows').classList.toggle('visible', on);
-  const card = document.getElementById('selectors-card');
-  const toggleRow = document.getElementById('toggle-row');
-  const hint = card.querySelector('.save-hint');
-  if (on) {
-    card.insertBefore(toggleRow, card.firstChild);
-  } else {
-    card.insertBefore(toggleRow, hint);
-  }
-}
-
 document.getElementById('perm-toggle').addEventListener('change', function() {
   localStorage.setItem('permMode', this.checked ? '1' : '0');
   applyPermLayout(this.checked);
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  selectedKey = todayKey; renderCalendar(); renderResult();
 });
-
 document.getElementById('perm-type-sel').addEventListener('change', function() {
   localStorage.setItem('permType_' + linkSel.value, this.value);
-  populateLineA();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  selectedKey = todayKey; renderCalendar(); renderResult();
 });
 document.getElementById('line-a-sel').addEventListener('change', function() {
   localStorage.setItem('permLineA_' + linkSel.value, this.value);
-  populateLineB();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  populateLineB(); selectedKey = todayKey; renderCalendar(); renderResult();
 });
 document.getElementById('line-b-sel').addEventListener('change', function() {
   localStorage.setItem('permLineB_' + linkSel.value, this.value);
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+  selectedKey = todayKey; renderCalendar(); renderResult();
 });
+
+// ── Export ────────────────────────────────────────────────────────────────────
+const COLOURS = [
+  { name: 'Red',    hex: '#e74c3c', ics: 'RED' },
+  { name: 'Orange', hex: '#e67e22', ics: 'ORANGE' },
+  { name: 'Yellow', hex: '#f1c40f', ics: 'YELLOW' },
+  { name: 'Green',  hex: '#27ae60', ics: 'GREEN' },
+  { name: 'Blue',   hex: '#2980b9', ics: 'BLUE' },
+  { name: 'Purple', hex: '#8e44ad', ics: 'PURPLE' },
+  { name: 'Pink',   hex: '#e91e8c', ics: 'PINK' },
+  { name: 'Grey',   hex: '#95a5a6', ics: 'GRAY' },
+];
+
+const EXP_DEFAULTS = { shifts: 1, early: 2, late: 0, rd: 5, al: 3, pay: 3 };
+let expColours = { ...EXP_DEFAULTS };
+
+function buildSwatches(key, containerId) {
+  const wrap = document.createElement('div');
+  wrap.className = 'colour-swatches';
+  COLOURS.forEach((c, i) => {
+    const s = document.createElement('div');
+    s.className = 'swatch' + (expColours[key] === i ? ' selected' : '');
+    s.style.background = c.hex;
+    s.title = c.name;
+    s.addEventListener('click', () => {
+      expColours[key] = i;
+      wrap.querySelectorAll('.swatch').forEach((el, j) => el.classList.toggle('selected', j === i));
+    });
+    wrap.appendChild(s);
+  });
+  return wrap;
+}
+
+function buildColourGrid() {
+  const grid = document.getElementById('colour-grid');
+  grid.innerHTML = '';
+  const simple = document.getElementById('exp-simple').checked;
+  const incShifts = document.getElementById('exp-shifts').checked;
+  const incRd = document.getElementById('exp-rd').checked;
+  const incAl = document.getElementById('exp-al').checked;
+  const incPay = document.getElementById('exp-pay').checked;
+
+  function addItem(label, key) {
+    const item = document.createElement('div');
+    item.className = 'colour-item';
+    item.innerHTML = `<label>${label}</label>`;
+    item.appendChild(buildSwatches(key, key));
+    grid.appendChild(item);
+  }
+
+  if (incShifts) {
+    if (simple) {
+      addItem('Early shifts', 'early');
+      addItem('Late shifts', 'late');
+    } else {
+      addItem('Shifts', 'shifts');
+    }
+  }
+  if (incRd) addItem('Rest days', 'rd');
+  if (incAl) addItem('Annual leave', 'al');
+  if (incPay) addItem('Paydays', 'pay');
+  if (grid.children.length === 0) grid.innerHTML = '<p style="font-size:12px;color:var(--text-hint);">Select items to include above.</p>';
+}
+
+document.getElementById('export-open-btn').addEventListener('click', () => {
+  buildColourGrid();
+  document.getElementById('export-modal').classList.remove('hidden');
+});
+document.getElementById('export-close').addEventListener('click', () => document.getElementById('export-modal').classList.add('hidden'));
+document.getElementById('export-modal').addEventListener('click', e => { if (e.target === document.getElementById('export-modal')) document.getElementById('export-modal').classList.add('hidden'); });
+document.getElementById('exp-simple').addEventListener('change', buildColourGrid);
+['exp-shifts','exp-rd','exp-al','exp-pay'].forEach(id => document.getElementById(id).addEventListener('change', buildColourGrid));
+
+function pad2(n) { return String(n).padStart(2,'0'); }
+function isoDate(d) { return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}`; }
+function isoDateTime(d) {
+  return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+}
+function uid(prefix, date) { return `${prefix}-${date}-${Math.random().toString(36).slice(2)}@leedsconductorroster`; }
+
+function parseTime(dateStr, timeStr, nextDay) {
+  const [h, m] = timeStr.split(':').map(Number);
+  const base = new Date(dateStr + 'T00:00:00');
+  if (nextDay) base.setDate(base.getDate() + 1);
+  base.setHours(h, m, 0);
+  return base;
+}
+
+function colourProp(idx) {
+  return COLOURS[idx] ? `COLOR:${COLOURS[idx].ics}
+` : '';
+}
+
+function buildICS() {
+  const fromStr = document.getElementById('exp-from').value;
+  const toStr = document.getElementById('exp-to').value;
+  const simple = document.getElementById('exp-simple').checked;
+  const incShifts = document.getElementById('exp-shifts').checked;
+  const incRd = document.getElementById('exp-rd').checked;
+  const incAl = document.getElementById('exp-al').checked;
+  const incPay = document.getElementById('exp-pay').checked;
+  const link = linkSel.value;
+  const newLine = parseInt(lineSel.value);
+  const al = getAL();
+
+  const from = new Date(fromStr + 'T00:00:00');
+  const to = new Date(toStr + 'T00:00:00');
+
+  let events = '';
+  const cur = new Date(from);
+
+  while (cur <= to) {
+    const k = dateStr(cur);
+    const shift = getActiveShift(k);
+
+    if (shift) {
+      // Annual leave
+      if (incAl && al.includes(k)) {
+        events += `BEGIN:VEVENT
+UID:${uid('al', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:Annual Leave
+${colourProp(expColours.al)}END:VEVENT
+`;
+        // Also export the underlying shift
+        if (incShifts && shift.type === 'SHIFT') {
+          const startDt = parseTime(k, shift.start, false);
+          const endH = parseInt(shift.end.split(':')[0]);
+          const startH = parseInt(shift.start.split(':')[0]);
+          const endDt = parseTime(k, shift.end, endH < startH);
+          const colIdx = simple ? (getWkNumSimple(k, link, newLine) % 2 === 0 ? expColours.early : expColours.late) : expColours.shifts;
+          const summary = simple ? (getWkNumSimple(k, link, newLine) % 2 === 0 ? 'Early Shift' : 'Late Shift') : shift.turn;
+          events += `BEGIN:VEVENT
+UID:${uid('shift', k)}
+DTSTART:${isoDateTime(startDt)}
+DTEND:${isoDateTime(endDt)}
+SUMMARY:${summary}
+${colourProp(colIdx)}END:VEVENT
+`;
+        }
+      } else if (shift.type === 'SHIFT') {
+        if (incShifts) {
+          if (simple) {
+            // Simple mode: just EARLY or LATE
+            const wk = getActiveWkNum(k);
+            const isEarly = wk % 2 === 0;
+            events += `BEGIN:VEVENT
+UID:${uid('shift', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:${isEarly ? 'Early Shift' : 'Late Shift'}
+${colourProp(isEarly ? expColours.early : expColours.late)}END:VEVENT
+`;
+          } else {
+            // Detailed mode
+            const startDt = parseTime(k, shift.start, false);
+            const endH = parseInt(shift.end.split(':')[0]);
+            const startH = parseInt(shift.start.split(':')[0]);
+            const endDt = parseTime(k, shift.end, endH < startH);
+            events += `BEGIN:VEVENT
+UID:${uid('shift', k)}
+DTSTART:${isoDateTime(startDt)}
+DTEND:${isoDateTime(endDt)}
+SUMMARY:${shift.turn}
+${colourProp(expColours.shifts)}END:VEVENT
+`;
+          }
+        }
+      } else if (shift.type === 'EARLY' || shift.type === 'LATE') {
+        if (incShifts) {
+          const isEarly = shift.type === 'EARLY';
+          events += `BEGIN:VEVENT
+UID:${uid('shift', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:${isEarly ? 'Early Shift' : 'Late Shift'}
+${colourProp(isEarly ? expColours.early : expColours.late)}END:VEVENT
+`;
+        }
+      } else if (shift.type === 'RD') {
+        if (incRd) {
+          events += `BEGIN:VEVENT
+UID:${uid('rd', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:Rest Day
+${colourProp(expColours.rd)}END:VEVENT
+`;
+        }
+      }
+    }
+
+    // Paydays (independent of shift)
+    if (incPay && PAYDAYS.has(k)) {
+      events += `BEGIN:VEVENT
+UID:${uid('pay', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:Payday
+${colourProp(expColours.pay)}END:VEVENT
+`;
+    }
+
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Leeds Conductor Roster//EN
+CALSCALE:GREGORIAN
+${events}END:VCALENDAR`;
+}
+
+function getWkNumSimple(dateKey, linkName, newLine) {
+  return getWkNum(dateKey, linkName, newLine);
+}
+
+document.getElementById('exp-download-btn').addEventListener('click', () => {
+  const ics = buildICS();
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'roster.ics';
+  a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('export-modal').classList.add('hidden');
+});
+
+// ── End Export ────────────────────────────────────────────────────────────────
 
 async function init() {
   try {
     const response = await fetch('roster.json');
-    if (!response.ok) throw new Error('Failed to load roster.json');
+    if (!response.ok) throw new Error('HTTP ' + response.status);
     ROSTER_DATA = await response.json();
     const linkNames = Object.keys(ROSTER_DATA);
     linkNames.forEach(name => {
       const o = document.createElement('option');
-      o.value = name; o.textContent = name;
-      linkSel.appendChild(o);
+      o.value = name; o.textContent = name; linkSel.appendChild(o);
     });
     const savedLink = localStorage.getItem('rosterLink') || 'Link 1A';
     linkSel.value = linkNames.includes(savedLink) ? savedLink : linkNames[0];
     populateLines();
-    // Restore perm mode toggle
     const permSaved = localStorage.getItem('permMode') === '1';
-    const permToggle = document.getElementById('perm-toggle');
-    permToggle.checked = permSaved;
-    const permTypeSaved = localStorage.getItem('permType_' + (localStorage.getItem('rosterLink') || 'Link 1A')) || 'early';
-    const permTypeSel = document.getElementById('perm-type-sel');
-    if (permTypeSel) permTypeSel.value = permTypeSaved;
+    document.getElementById('perm-toggle').checked = permSaved;
+    const permTypeSaved = localStorage.getItem('permType_' + linkSel.value) || 'early';
+    document.getElementById('perm-type-sel').value = permTypeSaved;
     applyPermLayout(permSaved);
-    // Re-run populateLineA/B now that perm type is restored
-    try { populateLineA(); } catch(e) { console.warn('populateLineA error:', e); }
-    // Simulate pressing Today button to ensure correct initial render
+    try { populateLineA(); } catch(e) { console.warn(e); }
+    // Show disclaimer on first visit, then help if also first visit
+    if (!localStorage.getItem('disclaimerSeen')) {
+      document.getElementById('disclaimer-modal').classList.remove('hidden');
+    } else if (!localStorage.getItem('helpSeen')) {
+      helpModal.classList.remove('hidden');
+    }
     setTimeout(() => {
-      viewYear = _now.getFullYear();
-      viewMonth = _now.getMonth();
       selectedKey = todayKey;
       renderCalendar();
       renderResult();
     }, 0);
   } catch(e) {
-    document.getElementById('result-card').innerHTML = '<p class="placeholder">Could not load roster data. Please check roster.json is uploaded.</p>';
-    console.error(e);
+    document.getElementById('result-card').innerHTML = '<p class="placeholder">Could not load roster data. Please ensure roster.json is uploaded.</p>';
+    console.error('Roster load error:', e);
   }
 }
-
 init();
 </script>
 </body>
