@@ -114,9 +114,7 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.4rem; }
 .date-row input[type="date"] { width: 100%; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--text); background: var(--metric-bg); }
 .date-row input[type="date"]:focus { outline: none; border-color: var(--accent); }
-.check-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; cursor: pointer; }
-.check-row input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
-.check-row span { font-size: 13px; color: var(--text-muted); }
+
 
 .simple-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.4rem; }
 .simple-toggle-label { font-size: 13px; color: var(--text-muted); }
@@ -234,12 +232,7 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
     </div>
 
     <div class="modal-section">
-      <h3>Include</h3>
-      <label class="check-row"><input type="checkbox" id="exp-shifts" checked><span>Turns of duty</span></label>
-      <label class="check-row"><input type="checkbox" id="exp-rd"><span>Rest days</span></label>
-      <label class="check-row"><input type="checkbox" id="exp-al" checked><span>Annual leave</span></label>
-      <label class="check-row"><input type="checkbox" id="exp-pay"><span>Paydays</span></label>
-      <p class="colour-note" style="margin-top:8px;">Mark any annual leave days before exporting so they're included in your calendar file.</p>
+      <p class="colour-note">Mark any annual leave days before exporting so they're included in your calendar file.</p>
     </div>
 
     <div class="modal-section">
@@ -681,37 +674,27 @@ function downloadICS(filename, content) {
 
 function buildDownloadBtns() {
   const simple = document.getElementById('exp-simple').checked;
-  const incShifts = document.getElementById('exp-shifts').checked;
-  const incRd = document.getElementById('exp-rd').checked;
-  const incAl = document.getElementById('exp-al').checked;
-  const incPay = document.getElementById('exp-pay').checked;
   const wrap = document.getElementById('download-btns');
   wrap.innerHTML = '';
 
-  function makeBtn(label, filename, fn) {
+  function makeBtn(label, fn) {
     const btn = document.createElement('button');
     btn.className = 'export-dl-btn';
     btn.style.marginTop = '0';
     btn.textContent = `Download ${label}`;
-    btn.addEventListener('click', () => { fn(); });
+    btn.addEventListener('click', fn);
     wrap.appendChild(btn);
   }
 
-  if (incShifts) {
-    if (simple) {
-      makeBtn('Early Shifts.ics', 'early-shifts.ics', () => downloadICS('Early Shifts.ics', buildShiftsICS('early')));
-      makeBtn('Late Shifts.ics', 'late-shifts.ics', () => downloadICS('Late Shifts.ics', buildShiftsICS('late')));
-    } else {
-      makeBtn('Shifts.ics', 'shifts.ics', () => downloadICS('Shifts.ics', buildShiftsICS('detailed')));
-    }
+  if (simple) {
+    makeBtn('Early Shifts.ics', () => downloadICS('Early Shifts.ics', buildShiftsICS('early')));
+    makeBtn('Late Shifts.ics', () => downloadICS('Late Shifts.ics', buildShiftsICS('late')));
+  } else {
+    makeBtn('Shifts.ics', () => downloadICS('Shifts.ics', buildShiftsICS('detailed')));
   }
-  if (incRd) makeBtn('Rest Days.ics', 'rest-days.ics', () => downloadICS('Rest Days.ics', buildRdICS()));
-  if (incAl) makeBtn('Annual Leave.ics', 'annual-leave.ics', () => downloadICS('Annual Leave.ics', buildAlICS()));
-  if (incPay) makeBtn('Paydays.ics', 'paydays.ics', () => downloadICS('Paydays.ics', buildPayICS()));
-
-  if (wrap.children.length === 0) {
-    wrap.innerHTML = '<p style="font-size:13px;color:var(--text-hint);">Select at least one item to include above.</p>';
-  }
+  makeBtn('Rest Days.ics', () => downloadICS('Rest Days.ics', buildRdICS()));
+  makeBtn('Annual Leave.ics', () => downloadICS('Annual Leave.ics', buildAlICS()));
+  makeBtn('Paydays.ics', () => downloadICS('Paydays.ics', buildPayICS()));
 }
 
 function getDateRange() {
@@ -861,7 +844,6 @@ document.getElementById('export-open-btn').addEventListener('click', () => {
 document.getElementById('export-close').addEventListener('click', () => document.getElementById('export-modal').classList.add('hidden'));
 document.getElementById('export-modal').addEventListener('click', e => { if (e.target === document.getElementById('export-modal')) document.getElementById('export-modal').classList.add('hidden'); });
 document.getElementById('exp-simple').addEventListener('change', buildDownloadBtns);
-['exp-shifts','exp-rd','exp-al','exp-pay'].forEach(id => document.getElementById(id).addEventListener('change', buildDownloadBtns));
 
 // ── End Export ─────────────────────────────────────────────────────────────────
 
