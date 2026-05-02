@@ -655,17 +655,11 @@ function parseTime(dateStr, timeStr, nextDay) {
 }
 
 function wrapICS(calName, events) {
-  return `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Leeds Conductor Roster//EN
-CALSCALE:GREGORIAN
-X-WR-CALNAME:${calName}
-X-WR-CALDESC:${calName}
-${events}END:VCALENDAR`;
+  return "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Leeds Conductor Roster//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-CALNAME:" + calName + "\r\nX-WR-CALDESC:" + calName + "\r\n" + events + "END:VCALENDAR\r\n";
 }
 
 function downloadICS(filename, content) {
-  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8;component=vevent' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = filename; a.click();
