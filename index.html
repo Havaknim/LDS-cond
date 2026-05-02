@@ -117,12 +117,7 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 .check-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; cursor: pointer; }
 .check-row input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
 .check-row span { font-size: 13px; color: var(--text-muted); }
-.colour-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.4rem; }
-.colour-item { display: flex; flex-direction: column; gap: 4px; }
-.colour-item label { font-size: 12px; color: var(--text-muted); }
-.colour-swatches { display: flex; gap: 4px; flex-wrap: wrap; }
-.swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.12s; flex-shrink: 0; }
-.swatch.selected { border-color: var(--text); }
+
 .simple-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-top: 0.4rem; }
 .simple-toggle-label { font-size: 13px; color: var(--text-muted); }
 .colour-note { font-size: 11px; color: var(--text-hint); font-style: italic; margin-top: 0.4rem; }
@@ -240,7 +235,7 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
 
     <div class="modal-section">
       <h3>Include</h3>
-      <label class="check-row"><input type="checkbox" id="exp-shifts" checked><span>Shifts</span></label>
+      <label class="check-row"><input type="checkbox" id="exp-shifts" checked><span>Turns of duty</span></label>
       <label class="check-row"><input type="checkbox" id="exp-rd"><span>Rest days</span></label>
       <label class="check-row"><input type="checkbox" id="exp-al" checked><span>Annual leave</span></label>
       <label class="check-row"><input type="checkbox" id="exp-pay"><span>Paydays</span></label>
@@ -248,15 +243,12 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
     </div>
 
     <div class="modal-section">
-      <h3>Colours</h3>
-      <p class="colour-note">Colour support varies between calendar apps and may not display on all devices.</p>
-      <div class="colour-grid" id="colour-grid">
-        <!-- Populated by JS -->
-      </div>
+      <h3>Download</h3>
+      <p class="colour-note">Each file imports as a separate calendar so you can set colours independently in your calendar app. Tap each file directly from your downloads folder for best results.</p>
+      <div id="download-btns" style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;"></div>
     </div>
 
-    <button class="export-dl-btn" id="exp-download-btn">Download .ics file</button>
-    <button class="modal-close" id="export-close" style="background:var(--metric-bg);color:var(--text-muted);margin-top:8px;">Cancel</button>
+    <button class="modal-close" id="export-close" style="background:var(--metric-bg);color:var(--text-muted);margin-top:8px;">Close</button>
   </div>
 </div>
 
@@ -656,82 +648,9 @@ document.getElementById('line-b-sel').addEventListener('change', function() {
 });
 
 // ── Export ────────────────────────────────────────────────────────────────────
-const COLOURS = [
-  { name: 'Red',    hex: '#e74c3c', ics: 'RED' },
-  { name: 'Orange', hex: '#e67e22', ics: 'ORANGE' },
-  { name: 'Yellow', hex: '#f1c40f', ics: 'YELLOW' },
-  { name: 'Green',  hex: '#27ae60', ics: 'GREEN' },
-  { name: 'Blue',   hex: '#2980b9', ics: 'BLUE' },
-  { name: 'Purple', hex: '#8e44ad', ics: 'PURPLE' },
-  { name: 'Pink',   hex: '#e91e8c', ics: 'PINK' },
-  { name: 'Grey',   hex: '#95a5a6', ics: 'GRAY' },
-];
-
-const EXP_DEFAULTS = { shifts: 1, early: 2, late: 0, rd: 5, al: 3, pay: 3 };
-let expColours = { ...EXP_DEFAULTS };
-
-function buildSwatches(key, containerId) {
-  const wrap = document.createElement('div');
-  wrap.className = 'colour-swatches';
-  COLOURS.forEach((c, i) => {
-    const s = document.createElement('div');
-    s.className = 'swatch' + (expColours[key] === i ? ' selected' : '');
-    s.style.background = c.hex;
-    s.title = c.name;
-    s.addEventListener('click', () => {
-      expColours[key] = i;
-      wrap.querySelectorAll('.swatch').forEach((el, j) => el.classList.toggle('selected', j === i));
-    });
-    wrap.appendChild(s);
-  });
-  return wrap;
-}
-
-function buildColourGrid() {
-  const grid = document.getElementById('colour-grid');
-  grid.innerHTML = '';
-  const simple = document.getElementById('exp-simple').checked;
-  const incShifts = document.getElementById('exp-shifts').checked;
-  const incRd = document.getElementById('exp-rd').checked;
-  const incAl = document.getElementById('exp-al').checked;
-  const incPay = document.getElementById('exp-pay').checked;
-
-  function addItem(label, key) {
-    const item = document.createElement('div');
-    item.className = 'colour-item';
-    item.innerHTML = `<label>${label}</label>`;
-    item.appendChild(buildSwatches(key, key));
-    grid.appendChild(item);
-  }
-
-  if (incShifts) {
-    if (simple) {
-      addItem('Early shifts', 'early');
-      addItem('Late shifts', 'late');
-    } else {
-      addItem('Shifts', 'shifts');
-    }
-  }
-  if (incRd) addItem('Rest days', 'rd');
-  if (incAl) addItem('Annual leave', 'al');
-  if (incPay) addItem('Paydays', 'pay');
-  if (grid.children.length === 0) grid.innerHTML = '<p style="font-size:12px;color:var(--text-hint);">Select items to include above.</p>';
-}
-
-document.getElementById('export-open-btn').addEventListener('click', () => {
-  buildColourGrid();
-  document.getElementById('export-modal').classList.remove('hidden');
-});
-document.getElementById('export-close').addEventListener('click', () => document.getElementById('export-modal').classList.add('hidden'));
-document.getElementById('export-modal').addEventListener('click', e => { if (e.target === document.getElementById('export-modal')) document.getElementById('export-modal').classList.add('hidden'); });
-document.getElementById('exp-simple').addEventListener('change', buildColourGrid);
-['exp-shifts','exp-rd','exp-al','exp-pay'].forEach(id => document.getElementById(id).addEventListener('change', buildColourGrid));
-
 function pad2(n) { return String(n).padStart(2,'0'); }
 function isoDate(d) { return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}`; }
-function isoDateTime(d) {
-  return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
-}
+function isoDateTime(d) { return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`; }
 function uid(prefix, date) { return `${prefix}-${date}-${Math.random().toString(36).slice(2)}@leedsconductorroster`; }
 
 function parseTime(dateStr, timeStr, nextDay) {
@@ -742,149 +661,209 @@ function parseTime(dateStr, timeStr, nextDay) {
   return base;
 }
 
-function colourProp(idx) {
-  return COLOURS[idx] ? `COLOR:${COLOURS[idx].ics}
-` : '';
+function wrapICS(calName, events) {
+  return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Leeds Conductor Roster//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:${calName}
+X-WR-CALDESC:${calName}
+${events}END:VCALENDAR`;
 }
 
-function buildICS() {
-  const fromStr = document.getElementById('exp-from').value;
-  const toStr = document.getElementById('exp-to').value;
+function downloadICS(filename, content) {
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildDownloadBtns() {
   const simple = document.getElementById('exp-simple').checked;
   const incShifts = document.getElementById('exp-shifts').checked;
   const incRd = document.getElementById('exp-rd').checked;
   const incAl = document.getElementById('exp-al').checked;
   const incPay = document.getElementById('exp-pay').checked;
-  const link = linkSel.value;
-  const newLine = parseInt(lineSel.value);
-  const al = getAL();
+  const wrap = document.getElementById('download-btns');
+  wrap.innerHTML = '';
 
-  const from = new Date(fromStr + 'T00:00:00');
-  const to = new Date(toStr + 'T00:00:00');
+  function makeBtn(label, filename, fn) {
+    const btn = document.createElement('button');
+    btn.className = 'export-dl-btn';
+    btn.style.marginTop = '0';
+    btn.textContent = `Download ${label}`;
+    btn.addEventListener('click', () => { fn(); });
+    wrap.appendChild(btn);
+  }
 
-  let events = '';
+  if (incShifts) {
+    if (simple) {
+      makeBtn('Early Shifts.ics', 'early-shifts.ics', () => downloadICS('Early Shifts.ics', buildShiftsICS('early')));
+      makeBtn('Late Shifts.ics', 'late-shifts.ics', () => downloadICS('Late Shifts.ics', buildShiftsICS('late')));
+    } else {
+      makeBtn('Shifts.ics', 'shifts.ics', () => downloadICS('Shifts.ics', buildShiftsICS('detailed')));
+    }
+  }
+  if (incRd) makeBtn('Rest Days.ics', 'rest-days.ics', () => downloadICS('Rest Days.ics', buildRdICS()));
+  if (incAl) makeBtn('Annual Leave.ics', 'annual-leave.ics', () => downloadICS('Annual Leave.ics', buildAlICS()));
+  if (incPay) makeBtn('Paydays.ics', 'paydays.ics', () => downloadICS('Paydays.ics', buildPayICS()));
+
+  if (wrap.children.length === 0) {
+    wrap.innerHTML = '<p style="font-size:13px;color:var(--text-hint);">Select at least one item to include above.</p>';
+  }
+}
+
+function getDateRange() {
+  const from = new Date(document.getElementById('exp-from').value + 'T00:00:00');
+  const to = new Date(document.getElementById('exp-to').value + 'T00:00:00');
+  return { from, to };
+}
+
+function iterateDates(from, to, cb) {
   const cur = new Date(from);
-
   while (cur <= to) {
-    const k = dateStr(cur);
-    const shift = getActiveShift(k);
+    cb(new Date(cur), dateStr(cur));
+    cur.setDate(cur.getDate() + 1);
+  }
+}
 
-    if (shift) {
-      // Annual leave
-      if (incAl && al.includes(k)) {
+function buildShiftsICS(mode) {
+  // mode: 'detailed', 'early', 'late'
+  const { from, to } = getDateRange();
+  const al = getAL();
+  let events = '';
+  const calName = mode === 'early' ? 'Roster - Early Shifts' : mode === 'late' ? 'Roster - Late Shifts' : 'Roster - Shifts';
+
+  iterateDates(from, to, (cur, k) => {
+    const shift = getActiveShift(k);
+    if (!shift || shift.type === 'RD') return;
+
+    const wk = getActiveWkNum(k);
+    const isEarly = wk % 2 === 0;
+
+    if (mode === 'early' && !isEarly) return;
+    if (mode === 'late' && isEarly) return;
+
+    if (shift.type === 'SHIFT') {
+      if (mode === 'detailed') {
+        const startDt = parseTime(k, shift.start, false);
+        const endH = parseInt(shift.end.split(':')[0]);
+        const startH = parseInt(shift.start.split(':')[0]);
+        const endDt = parseTime(k, shift.end, endH < startH);
         events += `BEGIN:VEVENT
-UID:${uid('al', k)}
-DTSTART;VALUE=DATE:${isoDate(cur)}
-DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
-SUMMARY:Annual Leave
-${colourProp(expColours.al)}END:VEVENT
-`;
-        // Also export the underlying shift
-        if (incShifts && shift.type === 'SHIFT') {
-          const startDt = parseTime(k, shift.start, false);
-          const endH = parseInt(shift.end.split(':')[0]);
-          const startH = parseInt(shift.start.split(':')[0]);
-          const endDt = parseTime(k, shift.end, endH < startH);
-          const colIdx = simple ? (getWkNumSimple(k, link, newLine) % 2 === 0 ? expColours.early : expColours.late) : expColours.shifts;
-          const summary = simple ? (getWkNumSimple(k, link, newLine) % 2 === 0 ? 'Early Shift' : 'Late Shift') : shift.turn;
-          events += `BEGIN:VEVENT
-UID:${uid('shift', k)}
-DTSTART:${isoDateTime(startDt)}
-DTEND:${isoDateTime(endDt)}
-SUMMARY:${summary}
-${colourProp(colIdx)}END:VEVENT
-`;
-        }
-      } else if (shift.type === 'SHIFT') {
-        if (incShifts) {
-          if (simple) {
-            // Simple mode: just EARLY or LATE
-            const wk = getActiveWkNum(k);
-            const isEarly = wk % 2 === 0;
-            events += `BEGIN:VEVENT
-UID:${uid('shift', k)}
-DTSTART;VALUE=DATE:${isoDate(cur)}
-DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
-SUMMARY:${isEarly ? 'Early Shift' : 'Late Shift'}
-${colourProp(isEarly ? expColours.early : expColours.late)}END:VEVENT
-`;
-          } else {
-            // Detailed mode
-            const startDt = parseTime(k, shift.start, false);
-            const endH = parseInt(shift.end.split(':')[0]);
-            const startH = parseInt(shift.start.split(':')[0]);
-            const endDt = parseTime(k, shift.end, endH < startH);
-            events += `BEGIN:VEVENT
 UID:${uid('shift', k)}
 DTSTART:${isoDateTime(startDt)}
 DTEND:${isoDateTime(endDt)}
 SUMMARY:${shift.turn}
-${colourProp(expColours.shifts)}END:VEVENT
+END:VEVENT
 `;
-          }
-        }
-      } else if (shift.type === 'EARLY' || shift.type === 'LATE') {
-        if (incShifts) {
-          const isEarly = shift.type === 'EARLY';
-          events += `BEGIN:VEVENT
+      } else {
+        // Simple mode — all day
+        events += `BEGIN:VEVENT
 UID:${uid('shift', k)}
 DTSTART;VALUE=DATE:${isoDate(cur)}
 DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
 SUMMARY:${isEarly ? 'Early Shift' : 'Late Shift'}
-${colourProp(isEarly ? expColours.early : expColours.late)}END:VEVENT
+END:VEVENT
 `;
-        }
-      } else if (shift.type === 'RD') {
-        if (incRd) {
-          events += `BEGIN:VEVENT
+      }
+    } else if (shift.type === 'EARLY' || shift.type === 'LATE') {
+      const shiftIsEarly = shift.type === 'EARLY';
+      if (mode === 'early' && !shiftIsEarly) return;
+      if (mode === 'late' && shiftIsEarly) return;
+      events += `BEGIN:VEVENT
+UID:${uid('shift', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:${shiftIsEarly ? 'Early Shift' : 'Late Shift'}
+END:VEVENT
+`;
+    }
+  });
+
+  return wrapICS(calName, events);
+}
+
+function buildRdICS() {
+  const { from, to } = getDateRange();
+  let events = '';
+  iterateDates(from, to, (cur, k) => {
+    const shift = getActiveShift(k);
+    if (shift && shift.type === 'RD') {
+      events += `BEGIN:VEVENT
 UID:${uid('rd', k)}
 DTSTART;VALUE=DATE:${isoDate(cur)}
 DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
 SUMMARY:Rest Day
-${colourProp(expColours.rd)}END:VEVENT
+END:VEVENT
 `;
-        }
+    }
+  });
+  return wrapICS('Roster - Rest Days', events);
+}
+
+function buildAlICS() {
+  const { from, to } = getDateRange();
+  const al = getAL();
+  let events = '';
+  iterateDates(from, to, (cur, k) => {
+    if (al.includes(k)) {
+      // Full day A/L event
+      events += `BEGIN:VEVENT
+UID:${uid('al', k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
+SUMMARY:Annual Leave
+END:VEVENT
+`;
+      // Also include the underlying shift
+      const shift = getActiveShift(k);
+      if (shift && shift.type === 'SHIFT') {
+        const startDt = parseTime(k, shift.start, false);
+        const endH = parseInt(shift.end.split(':')[0]);
+        const startH = parseInt(shift.start.split(':')[0]);
+        const endDt = parseTime(k, shift.end, endH < startH);
+        events += `BEGIN:VEVENT
+UID:${uid('al-shift', k)}
+DTSTART:${isoDateTime(startDt)}
+DTEND:${isoDateTime(endDt)}
+SUMMARY:${shift.turn} (A/L)
+END:VEVENT
+`;
       }
     }
+  });
+  return wrapICS('Roster - Annual Leave', events);
+}
 
-    // Paydays (independent of shift)
-    if (incPay && PAYDAYS.has(k)) {
+function buildPayICS() {
+  const { from, to } = getDateRange();
+  let events = '';
+  iterateDates(from, to, (cur, k) => {
+    if (PAYDAYS.has(k)) {
       events += `BEGIN:VEVENT
 UID:${uid('pay', k)}
 DTSTART;VALUE=DATE:${isoDate(cur)}
 DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime() + 86400000))}
 SUMMARY:Payday
-${colourProp(expColours.pay)}END:VEVENT
+END:VEVENT
 `;
     }
-
-    cur.setDate(cur.getDate() + 1);
-  }
-
-  return `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Leeds Conductor Roster//EN
-CALSCALE:GREGORIAN
-${events}END:VCALENDAR`;
+  });
+  return wrapICS('Roster - Paydays', events);
 }
 
-function getWkNumSimple(dateKey, linkName, newLine) {
-  return getWkNum(dateKey, linkName, newLine);
-}
-
-document.getElementById('exp-download-btn').addEventListener('click', () => {
-  const ics = buildICS();
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'roster.ics';
-  a.click();
-  URL.revokeObjectURL(url);
-  document.getElementById('export-modal').classList.add('hidden');
+document.getElementById('export-open-btn').addEventListener('click', () => {
+  buildDownloadBtns();
+  document.getElementById('export-modal').classList.remove('hidden');
 });
+document.getElementById('export-close').addEventListener('click', () => document.getElementById('export-modal').classList.add('hidden'));
+document.getElementById('export-modal').addEventListener('click', e => { if (e.target === document.getElementById('export-modal')) document.getElementById('export-modal').classList.add('hidden'); });
+document.getElementById('exp-simple').addEventListener('change', buildDownloadBtns);
+['exp-shifts','exp-rd','exp-al','exp-pay'].forEach(id => document.getElementById(id).addEventListener('change', buildDownloadBtns));
 
-// ── End Export ────────────────────────────────────────────────────────────────
+// ── End Export ─────────────────────────────────────────────────────────────────
 
 async function init() {
   try {
