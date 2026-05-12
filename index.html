@@ -492,7 +492,7 @@ function renderDiagram(turnNum,dateKey){
     if(!fromCrs||!headcode)return headcode;
     const t=depTime.replace(':','');
     const d=dateKey;
-    return `<a class="train-headcode" href="https://www.realtimetrains.co.uk/search/detailed/gb-nr:${fromCrs}/${d}/${t}?sched=1" target="_blank">${headcode}</a>`;
+    return `<a class="train-headcode" href="https://www.realtimetrains.co.uk/search/detailed/gb-nr:${fromCrs}/${d}/${t}" target="_blank">${headcode}</a>`;
   }
 
   function renderVariant(v,idx){
@@ -509,7 +509,9 @@ function renderDiagram(turnNum,dateKey){
         const hcode=rttLink(s.headcode,s.dep,s.from_crs,dateKey);
         const notes=s.notes&&s.notes.length?`<p class="train-notes">${s.notes.join(' - ')}</p>`:'';
         const disp=s.dispose?`<p class="train-dispose">Dispose at ${s.to}</p>`:(s.to?`<p class="train-dispose">${s.to} arr ${s.arr}</p>`:'');
-        segs+=`<div class="seg-card"><div class="train-header"><div><p class="train-dep">${s.dep}</p><p class="train-from">${s.from}</p></div><div class="train-right">${hcode}<p class="train-stock">${s.stock||''}</p></div></div><div class="train-body"><div class="train-route"><span>${s.from}</span><span> > </span><span class="train-dest">${s.to||'?'}</span><span class="train-arr">${s.arr?'arr '+s.arr:''}</span></div>${notes}${disp}</div></div>`;
+        const actLabels={'ASST':'Assisting','PASS':'Passing through','PTDT':'Prepare and take','PT':'Prepare and take'};
+        const actLabel=s.act&&actLabels[s.act]?`<p class="seg-label" style="color:var(--accent-text);font-size:11px;margin-bottom:2px;">${actLabels[s.act]}</p>`:'';
+        segs+=`<div class="seg-card"><div class="train-header"><div>${actLabel}<p class="train-dep">${s.dep}</p><p class="train-from">${s.from}</p></div><div class="train-right">${hcode}<p class="train-stock">${s.stock||''}</p></div></div><div class="train-body"><div class="train-route"><span>${s.from}</span><span> > </span><span class="train-dest">${s.to||'?'}</span><span class="train-arr">${s.arr?'arr '+s.arr:''}</span></div>${notes}${disp}</div></div>`;
       }
     }
     return `<div id="diag-variant-${idx}" style="${idx>0?'display:none':''}">${segs}</div>`;
