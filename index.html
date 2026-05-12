@@ -12,7 +12,7 @@
   --accent:#6c5ce7;--accent-light:#ede9ff;--accent-text:#6c5ce7;
   --rd-color:#74b9ff;--ar-color:#00b894;
   --al-color:#c0614a;--al-bg:#fdf0ed;--al-dot:#c0614a;
-  --dl-color:#9b8fcc;--dl-bg:#f0edfa;
+  --dl-color:#e8a0b4;--dl-bg:#fdf0f4;
   --shadow:0 2px 12px rgba(0,0,0,0.08);
   --select-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -22,7 +22,7 @@
   --accent:#a29bfe;--accent-light:#2d2a4a;--accent-text:#a29bfe;
   --rd-color:#74b9ff;--ar-color:#55efc4;
   --al-color:#e07060;--al-bg:#2a1510;--al-dot:#e07060;
-  --dl-color:#b8a8e8;--dl-bg:#1e1a2e;
+  --dl-color:#f4a0b8;--dl-bg:#2a1520;
   --shadow:0 2px 16px rgba(0,0,0,0.4);
   --select-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -114,7 +114,7 @@ h1{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-0.3px;}
 .action-btn.active-dl{background:var(--dl-bg);border-color:var(--dl-color);color:var(--dl-color);}
 .action-btn.diag-btn{border-color:var(--border);}
 .action-btn.diag-btn.open{background:var(--accent-light);border-color:var(--accent);color:var(--accent-text);}
-.dl-input-row{display:flex;gap:8px;margin-top:6px;}
+.dl-input-row{display:flex;gap:8px;margin-top:6px;}.dl-input-row.hidden{display:none;}
 .dl-input-row input[type="number"]{width:70px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--metric-bg);}
 .dl-input-row select{flex:1;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:var(--metric-bg);appearance:none;}
 .dl-input-row button{padding:6px 12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;}
