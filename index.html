@@ -483,9 +483,16 @@ function renderDiagram(turnNum,dateKey){
   const variants=DIAG_DATA[turnNum];
   if(!variants||!variants.length){panel.innerHTML='';panel.classList.remove('visible');return;}
   const dt=new Date(dateKey+'T00:00:00');
-  const dateFrom=dt.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'}).split('/').reverse().join('/');
+  const dow=dt.getDay();
   function parseDate(s){const p=s.split('/');return new Date(p[2],p[1]-1,p[0]);}
-  const relevant=variants.filter(v=>{const f=parseDate(v.from);const t=parseDate(v.to);return dt>=f&&dt<=t;});
+  const DAY_CODES={'MO':[1],'MSX':[2,3,4,5],'FO':[5],'FSX':[5],'SX':[1,2,3,4,5],'SO':[6],'SU':[0],'Su':[0],'TThO':[2,4],'TWThO':[2,3,4],'WO':[3],'ThO':[4],'ThX':[1,2,3,5,6],'MX':[2,3,4,5],'FX':[1,2,3,4],'MSo':[1,2,3,4,5,6],'Daily':[0,1,2,3,4,5,6]};
+  function matchesDayAndDate(v){
+    const f=parseDate(v.from);const t=parseDate(v.to);
+    if(dt<f||dt>t)return false;
+    const days=DAY_CODES[v.days];
+    return !days||days.includes(dow);
+  }
+  const relevant=variants.filter(matchesDayAndDate);
   const toShow=relevant.length?relevant:variants;
 
   function rttLink(headcode,depTime,fromCrs,dateKey){
@@ -509,7 +516,7 @@ function renderDiagram(turnNum,dateKey){
         const hcode=rttLink(s.headcode,s.dep,s.from_crs,dateKey);
         const notes=s.notes&&s.notes.length?`<p class="train-notes">${s.notes.join(' - ')}</p>`:'';
         const disp=s.dispose?`<p class="train-dispose">Dispose at ${s.to}</p>`:(s.to?`<p class="train-dispose">${s.to} arr ${s.arr}</p>`:'');
-        const actLabels={'ASST':'ASST','PASS':'PASS','PTDT':'PTDT','PT':'PT'};
+        const actLabels={'ASST':'Assisting','PASS':'Passing through','PTDT':'Prepare and take','PT':'Prepare and take'};
         const actLabel=s.act&&actLabels[s.act]?`<p class="seg-label" style="color:var(--accent-text);font-size:11px;margin-bottom:2px;">${actLabels[s.act]}</p>`:'';
         segs+=`<div class="seg-card"><div class="train-header"><div>${actLabel}<p class="train-dep">${s.dep}</p><p class="train-from">${s.from}</p></div><div class="train-right">${hcode}<p class="train-stock">${s.stock||''}</p></div></div><div class="train-body"><div class="train-route"><span>${s.from}</span><span> > </span><span class="train-dest">${s.to||'?'}</span><span class="train-arr">${s.arr?'arr '+s.arr:''}</span></div>${notes}${disp}</div></div>`;
       }
@@ -517,7 +524,7 @@ function renderDiagram(turnNum,dateKey){
     return `<div id="diag-variant-${idx}" style="${idx>0?'display:none':''}">${segs}</div>`;
   }
 
-  const tabsHTML=toShow.length>1?`<div class="diag-tabs">${toShow.map((v,i)=>`<button class="diag-tab${i===0?' active':''}" onclick="showDiagTab(${i},${toShow.length})">${v.days}</button>`).join('')}</div>`:'';
+  const tabsHTML=toShow.length>1?`<div class="diag-tabs">${toShow.map((v,i)=>`<button class="diag-tab${i===0?' active':''}" onclick="showDiagTab(${i},${toShow.length})">${v.days} ${v.from.slice(0,5)}-${v.to.slice(0,5)}</button>`).join('')}</div>`:'';;
   const flagsHTML=toShow[0].flags.map(f=>`<span class="meta-pill flag">${f}</span>`).join('');
   const applyHTML=toShow.length===1?`<span class="meta-pill flag">${toShow[0].days} ${toShow[0].from} - ${toShow[0].to}</span>`:'';
 
