@@ -677,15 +677,7 @@ function isoDate(d){return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.ge
 function isoDateTime(d){return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;}
 function uid(p,k){return `${p}-${k}-${Math.random().toString(36).slice(2)}@leedsconductorroster`;}
 function parseTime(dateStr,timeStr,nextDay){const [h,m]=timeStr.split(':').map(Number);const base=new Date(dateStr+'T00:00:00');if(nextDay)base.setDate(base.getDate()+1);base.setHours(h,m,0);return base;}
-function wrapICS(calName,events){return "BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Leeds Conductor Roster//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-X-WR-CALNAME:"+calName+"
-X-WR-CALDESC:"+calName+"
-"+events+"END:VCALENDAR
-";}
+function wrapICS(calName,events){return "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Leeds Conductor Roster//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-CALNAME:"+calName+"\r\nX-WR-CALDESC:"+calName+"\r\n"+events+"END:VCALENDAR\r\n";}
 function downloadICS(filename,content){const blob=new Blob([content],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
 
 function getDateRange(){return{from:new Date(document.getElementById('exp-from').value+'T00:00:00'),to:new Date(document.getElementById('exp-to').value+'T00:00:00')};}
