@@ -7,115 +7,218 @@
 <link rel="icon" href="favicon.png" sizes="any"><link rel="apple-touch-icon" href="favicon.png">
 <style>
 :root {
-  --bg: #f0f2f5;
-  --card: #ffffff;
-  --text: #1a1a2e;
-  --text-muted: #888;
-  --text-hint: #bbb;
-  --border: #e8eaed;
-  --metric-bg: #f7f8fa;
-  --nav-bg: #f0f2f5;
-  --nav-hover: #e0e3e8;
-  --accent: #6c5ce7;
-  --accent-light: #ede9ff;
-  --accent-text: #6c5ce7;
-  --rd-color: #74b9ff;
-  --ar-color: #00b894;
-  --shadow: 0 2px 12px rgba(0,0,0,0.08);
-  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  --bg:#f0f2f5;--card:#ffffff;--text:#1a1a2e;--text-muted:#888;--text-hint:#bbb;
+  --border:#e8eaed;--metric-bg:#f7f8fa;--nav-bg:#f0f2f5;--nav-hover:#e0e3e8;
+  --accent:#6c5ce7;--accent-light:#ede9ff;--accent-text:#6c5ce7;
+  --rd-color:#74b9ff;--ar-color:#00b894;
+  --al-color:#c0614a;--al-bg:#fdf0ed;--al-dot:#c0614a;
+  --dl-color:#9b8fcc;--dl-bg:#f0edfa;
+  --shadow:0 2px 12px rgba(0,0,0,0.08);
+  --select-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 [data-theme="dark"] {
-  --bg: #0f0f17;
-  --card: #1a1a2a;
-  --text: #e8e8f0;
-  --text-muted: #888;
-  --text-hint: #555;
-  --border: #2a2a3a;
-  --metric-bg: #22223a;
-  --nav-bg: #22223a;
-  --nav-hover: #2e2e48;
-  --accent: #a29bfe;
-  --accent-light: #2d2a4a;
-  --accent-text: #a29bfe;
-  --rd-color: #74b9ff;
-  --ar-color: #55efc4;
-  --shadow: 0 2px 16px rgba(0,0,0,0.4);
-  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  --bg:#0f0f17;--card:#1a1a2a;--text:#e8e8f0;--text-muted:#888;--text-hint:#555;
+  --border:#2a2a3a;--metric-bg:#22223a;--nav-bg:#22223a;--nav-hover:#2e2e48;
+  --accent:#a29bfe;--accent-light:#2d2a4a;--accent-text:#a29bfe;
+  --rd-color:#74b9ff;--ar-color:#55efc4;
+  --al-color:#e07060;--al-bg:#2a1510;--al-dot:#e07060;
+  --dl-color:#b8a8e8;--dl-bg:#1e1a2e;
+  --shadow:0 2px 16px rgba(0,0,0,0.4);
+  --select-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 1.5rem 1rem 3rem; color: var(--text); transition: background 0.2s, color 0.2s; }
-.container { width: 100%; max-width: 420px; }
-.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
-.dark-btn { width: 36px; height: 36px; border: 1.5px solid var(--border); background: var(--card); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
-.dark-btn:hover { background: var(--nav-bg); }
-.selectors-card { background: var(--card); border-radius: 16px; padding: 1rem 1.25rem; box-shadow: var(--shadow); margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 10px; }
-.sel-row { display: flex; align-items: center; gap: 10px; }
-.sel-row label { font-size: 13px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; min-width: 80px; }
-.sel-row select { flex: 1; padding: 8px 28px 8px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: var(--metric-bg); cursor: pointer; appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 10px center; transition: border-color 0.15s, background 0.2s; }
-.sel-row select:focus { outline: none; border-color: var(--accent); }
-.save-hint { font-size: 11px; color: var(--text-hint); text-align: right; margin-top: -2px; }
-.cal-card { background: var(--card); border-radius: 16px; padding: 1.25rem; box-shadow: var(--shadow); margin-bottom: 0.75rem; }
-.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 8px; }
-.cal-header h2 { font-size: 16px; font-weight: 600; color: var(--text); }
-.nav-btn { width: 32px; height: 32px; border: none; background: var(--nav-bg); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-muted); transition: background 0.15s; flex-shrink: 0; }
-.nav-btn:hover { background: var(--nav-hover); }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-.day-label { text-align: center; font-size: 12px; font-weight: 500; color: var(--text-hint); padding: 4px 0 8px; }
-.day-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 8px; cursor: pointer; color: var(--text); transition: background 0.12s; position: relative; }
-.day-cell:hover:not(.empty):not(.out-range) { background: var(--nav-bg); }
-.day-cell.empty, .day-cell.out-range { cursor: default; color: var(--text-hint); }
-.day-cell.selected { background: var(--accent) !important; color: #fff !important; font-weight: 600; }
-.day-cell.today-cell:not(.selected)::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
-.day-cell.is-rd:not(.selected):not(.out-range) { color: var(--rd-color); }
-.day-cell.is-ar:not(.selected):not(.out-range) { color: var(--ar-color); }
-.jump-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; }
-.jump-label { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
-.jump-btn { height: 32px; padding: 0 14px; border: none; background: var(--accent-light); border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--accent-text); transition: opacity 0.15s; white-space: nowrap; }
-.jump-btn:hover { opacity: 0.8; }
-.result-card { background: var(--card); border-radius: 16px; padding: 1.25rem; box-shadow: var(--shadow); min-height: 80px; }
-.result-date-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.wk-badge { font-size: 11px; background: var(--accent-light); color: var(--accent-text); border-radius: 20px; padding: 2px 10px; font-weight: 500; }
-.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
-.metric { background: var(--metric-bg); border-radius: 10px; padding: 10px 12px; }
-.metric-label { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
-.metric-value { font-size: 18px; font-weight: 600; color: var(--text); }
-.metric-value.small { font-size: 14px; }
-.type-block { background: var(--metric-bg); border-radius: 10px; padding: 14px; text-align: center; font-size: 17px; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
-.type-block.rd { color: var(--rd-color); }
-.adj-section { border-top: 1px solid var(--border); padding-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.adj-card { background: var(--metric-bg); border-radius: 10px; padding: 10px 12px; }
-.adj-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-hint); margin-bottom: 4px; }
-.adj-day-name { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
-.adj-turn { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
-.adj-times { font-size: 12px; color: var(--text-muted); }
-.adj-type { font-size: 13px; font-weight: 500; color: var(--text); }
-.adj-type.rd { color: var(--rd-color); }
-.adj-type.ar { color: var(--ar-color); }
-.payday-dot { position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #f9ca24; }
-.day-cell.selected .payday-dot { background: #fff; }
-.payday-note { font-size: 12px; color: #c9a500; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
-[data-theme="dark"] .payday-note { color: #f9ca24; }
-.special-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
-.placeholder { color: var(--text-hint); font-size: 14px; text-align: center; padding: 0.5rem 0; }
-.timetable-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; padding: 8px 10px; background: var(--metric-bg); border-radius: 8px; border-left: 3px solid var(--border); font-style: italic; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1.5rem 1rem 3rem;color:var(--text);transition:background 0.2s,color 0.2s;}
+.container{width:100%;max-width:420px;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+h1{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-0.3px;}
+.top-btns{display:flex;gap:8px;}
+.icon-btn{width:36px;height:36px;border:1.5px solid var(--border);background:var(--card);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:background 0.15s;flex-shrink:0;}
+.icon-btn:hover{background:var(--nav-bg);}
+.selectors-card{background:var(--card);border-radius:16px;padding:1rem 1.25rem;box-shadow:var(--shadow);margin-bottom:0.75rem;display:flex;flex-direction:column;gap:10px;}
+.sel-row{display:flex;align-items:center;gap:10px;}
+.sel-row label{font-size:13px;color:var(--text-muted);white-space:nowrap;flex-shrink:0;min-width:80px;}
+.sel-row select{flex:1;padding:8px 28px 8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--metric-bg);cursor:pointer;appearance:none;background-image:var(--select-arrow);background-repeat:no-repeat;background-position:right 10px center;transition:border-color 0.15s,background 0.2s;}
+.sel-row select:focus{outline:none;border-color:var(--accent);}
+.save-hint{font-size:11px;color:var(--text-hint);text-align:right;margin-top:-2px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding-top:4px;border-top:1px solid var(--border);}
+.toggle-label{font-size:13px;color:var(--text-muted);}
+.toggle-switch{position:relative;width:42px;height:24px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:24px;cursor:pointer;transition:background 0.2s;}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
+.toggle-switch input:checked+.toggle-slider{background:var(--accent);}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(18px);}
+.perm-rows{display:none;flex-direction:column;gap:10px;}
+.perm-rows.visible{display:flex;}
+.perm-line-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.perm-line-pair select{width:100%;padding:8px 28px 8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--metric-bg);cursor:pointer;appearance:none;background-image:var(--select-arrow);background-repeat:no-repeat;background-position:right 10px center;}
+.perm-line-pair select:focus{outline:none;border-color:var(--accent);}
+.perm-line-label{font-size:13px;color:var(--text-muted);margin-bottom:2px;}
+.cal-card{background:var(--card);border-radius:16px;padding:1.25rem;box-shadow:var(--shadow);margin-bottom:0.75rem;}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:8px;}
+.cal-header h2{font-size:16px;font-weight:600;color:var(--text);}
+.nav-btn{width:32px;height:32px;border:none;background:var(--nav-bg);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-muted);transition:background 0.15s;flex-shrink:0;}
+.nav-btn:hover{background:var(--nav-hover);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.day-label{text-align:center;font-size:12px;font-weight:500;color:var(--text-hint);padding:4px 0 8px;}
+.day-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:8px;cursor:pointer;color:var(--text);transition:background 0.12s;position:relative;}
+.day-cell:hover:not(.empty):not(.out-range){background:var(--nav-bg);}
+.day-cell.empty,.day-cell.out-range{cursor:default;color:var(--text-hint);}
+.day-cell.selected{background:var(--accent)!important;color:#fff!important;font-weight:600;}
+.day-cell.today-cell:not(.selected)::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.day-cell.is-rd:not(.selected):not(.out-range){color:var(--rd-color);}
+.day-cell.is-ar:not(.selected):not(.out-range){color:var(--ar-color);}
+.day-cell.is-al{box-shadow:inset 0 0 0 2px var(--al-dot);}
+.day-cell.is-dl{box-shadow:inset 0 0 0 2px var(--dl-color);}
+.day-cell.is-al.is-dl{box-shadow:inset 0 0 0 2px var(--al-dot),inset 0 0 0 4px var(--dl-color);}
+.payday-dot{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:#f9ca24;}
+.day-cell.selected .payday-dot{background:rgba(255,255,255,0.8);}
+.jump-bar{display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;flex-wrap:wrap;}
+.jump-label{font-size:13px;color:var(--text-muted);white-space:nowrap;}
+.jump-btn{height:32px;padding:0 14px;border:none;background:var(--accent-light);border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;color:var(--accent-text);transition:opacity 0.15s;white-space:nowrap;}
+.jump-btn:hover{opacity:0.8;}
+.result-card{background:var(--card);border-radius:16px;padding:1.25rem;box-shadow:var(--shadow);min-height:80px;}
+.result-date-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.wk-badge{font-size:11px;background:var(--accent-light);color:var(--accent-text);border-radius:20px;padding:2px 10px;font-weight:500;}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem;}
+.metric{background:var(--metric-bg);border-radius:10px;padding:10px 12px;}
+.metric-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;}
+.metric-value{font-size:18px;font-weight:600;color:var(--text);}
+.metric-value.small{font-size:14px;}
+.type-block{background:var(--metric-bg);border-radius:10px;padding:14px;text-align:center;font-size:17px;font-weight:600;margin-bottom:1rem;color:var(--text);}
+.type-block.rd{color:var(--rd-color);}
+.adj-section{border-top:1px solid var(--border);padding-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.adj-card{background:var(--metric-bg);border-radius:10px;padding:10px 12px;}
+.adj-title{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-hint);margin-bottom:4px;}
+.adj-day-name{font-size:12px;color:var(--text-muted);margin-bottom:2px;}
+.adj-turn{font-size:14px;font-weight:600;color:var(--text);margin-bottom:1px;}
+.adj-times{font-size:12px;color:var(--text-muted);}
+.adj-type{font-size:13px;font-weight:500;color:var(--text);}
+.adj-type.rd{color:var(--rd-color);}
+.adj-type.ar{color:var(--ar-color);}
+.payday-note{font-size:12px;color:#c9a500;margin-top:8px;display:flex;align-items:center;gap:5px;}
+[data-theme="dark"] .payday-note{color:#f9ca24;}
+.special-note{font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;}
+.timetable-note{font-size:12px;color:var(--text-muted);margin-top:8px;padding:8px 10px;background:var(--metric-bg);border-radius:8px;border-left:3px solid var(--border);font-style:italic;}
+.placeholder{color:var(--text-hint);font-size:14px;text-align:center;padding:0.5rem 0;}
+.badges-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.badge{font-size:12px;padding:3px 10px;border-radius:20px;font-weight:500;}
+.badge.payday{background:#fff8dc;color:#b8860b;}
+[data-theme="dark"] .badge.payday{background:#2a2010;color:#f9ca24;}
+.badge.al{background:var(--al-bg);color:var(--al-color);border:1px solid var(--al-dot);}
+.badge.dl{background:var(--dl-bg);color:var(--dl-color);border:1px solid var(--dl-color);}
+.action-btns{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.action-btn{width:100%;padding:9px;border:1.5px solid var(--border);background:transparent;border-radius:8px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.action-btn:hover{border-color:var(--accent);color:var(--accent-text);}
+.action-btn.active-al{background:var(--al-bg);border-color:var(--al-dot);color:var(--al-color);}
+.action-btn.active-dl{background:var(--dl-bg);border-color:var(--dl-color);color:var(--dl-color);}
+.action-btn.diag-btn{border-color:var(--border);}
+.action-btn.diag-btn.open{background:var(--accent-light);border-color:var(--accent);color:var(--accent-text);}
+.dl-input-row{display:flex;gap:8px;margin-top:6px;}
+.dl-input-row input[type="number"]{width:70px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--metric-bg);}
+.dl-input-row select{flex:1;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:var(--metric-bg);appearance:none;}
+.dl-input-row button{padding:6px 12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;}
+.diag-panel{margin-top:0.75rem;display:none;}
+.diag-panel.visible{display:block;}
+.diag-summary{background:var(--card);border-radius:16px;padding:1rem 1.25rem;box-shadow:var(--shadow);margin-bottom:0.5rem;}
+.diag-summary-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.diag-meta{display:flex;gap:6px;flex-wrap:wrap;}
+.meta-pill{font-size:11px;background:var(--metric-bg);border-radius:20px;padding:3px 10px;color:var(--text-muted);}
+.meta-pill.flag{background:var(--accent-light);color:var(--accent-text);}
+.diag-tabs{display:flex;gap:6px;margin-bottom:0.5rem;flex-wrap:wrap;}
+.diag-tab{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:var(--text-muted);background:transparent;transition:all 0.15s;}
+.diag-tab.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent-text);}
+.segments{display:flex;flex-direction:column;gap:6px;}
+.seg-card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+.seg-activity{background:var(--metric-bg);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.seg-activity.seg-break{border-left:3px solid #fdcb6e;}
+.seg-activity.seg-rel{border-left:3px solid var(--accent);}
+.seg-activity.seg-signon{border-left:3px solid var(--ar-color);}
+.seg-activity.seg-signoff{border-left:3px solid var(--rd-color);}
+.seg-activity.seg-taxi{border-left:3px solid var(--text-hint);}
+.seg-activity.seg-note{border-left:3px solid var(--text-hint);}
+.seg-icon{font-size:16px;flex-shrink:0;}
+.seg-label{font-size:11px;color:var(--text-muted);}
+.seg-value{font-size:14px;font-weight:500;color:var(--text);}
+.seg-sub{font-size:12px;color:var(--text-hint);margin-top:1px;}
+.train-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.train-dep{font-size:18px;font-weight:700;color:var(--text);}
+.train-from{font-size:12px;color:var(--text-muted);}
+.train-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.train-headcode{font-size:13px;font-weight:600;color:var(--accent-text);background:var(--accent-light);padding:3px 10px;border-radius:20px;text-decoration:none;}
+.train-headcode:hover{opacity:0.8;}
+.train-stock{font-size:11px;color:var(--text-hint);}
+.train-body{padding:8px 14px;}
+.train-route{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:4px;}
+.train-dest{color:var(--text);font-weight:500;}
+.train-arr{margin-left:auto;font-size:12px;}
+.train-notes{font-size:11px;color:var(--text-hint);font-style:italic;}
+.train-dispose{font-size:12px;color:var(--text-hint);margin-top:2px;}
+.export-btn-wrap{margin-top:1rem;text-align:center;}
+.export-main-btn{padding:10px 24px;background:var(--metric-bg);border:1.5px solid var(--border);border-radius:10px;font-size:13px;color:var(--text-muted);cursor:pointer;transition:border-color 0.15s;}
+.export-main-btn:hover{border-color:var(--accent);color:var(--accent-text);}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.hidden{display:none;}
+.modal{background:var(--card);border-radius:16px;padding:1.5rem;max-width:380px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.3);}
+.modal h2{font-size:17px;font-weight:600;color:var(--text);margin-bottom:1rem;}
+.modal h3{font-size:13px;font-weight:600;color:var(--text);margin:1rem 0 0.4rem;}
+.modal p{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:0.5rem;}
+.modal-section{border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem;}
+.date-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.4rem;}
+.date-row input[type="date"]{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:var(--metric-bg);}
+.simple-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:0.4rem;}
+.simple-toggle-label{font-size:13px;color:var(--text-muted);}
+.colour-note{font-size:11px;color:var(--text-hint);font-style:italic;margin-top:0.4rem;}
+.download-btns{display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;}
+.export-dl-btn{width:100%;margin-top:0;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;}
+.export-dl-btn:hover{opacity:0.9;}
+.modal-close{width:100%;margin-top:8px;padding:10px;background:var(--metric-bg);color:var(--text-muted);border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;}
+.modal-close.primary{background:var(--accent);color:#fff;}
 </style>
 </head>
 <body>
 <div class="container">
   <div class="top-bar">
     <h1>Leeds Conductor Roster</h1>
-    <button class="dark-btn" id="dark-btn" title="Toggle dark mode">🌙</button>
+    <div class="top-btns">
+      <button class="icon-btn" id="help-btn" title="Help">&#x2753;</button>
+      <button class="icon-btn" id="dark-btn" title="Toggle dark mode">&#x1F319;</button>
+    </div>
   </div>
 
-  <div class="selectors-card">
+  <div class="selectors-card" id="selectors-card">
     <div class="sel-row">
       <label for="link-sel">Link</label>
       <select id="link-sel"></select>
     </div>
-    <div class="sel-row">
-      <label for="line-sel">Your line as of W/C 12/04/26:</label>
-      <select id="line-sel"></select>
+    <div id="standard-line-row">
+      <div class="sel-row">
+        <label for="line-sel">Your line as of W/C 17/05/26:</label>
+        <select id="line-sel"></select>
+      </div>
+    </div>
+    <div class="perm-rows" id="perm-rows">
+      <div class="sel-row">
+        <label for="perm-type-sel">Doing:</label>
+        <select id="perm-type-sel">
+          <option value="early">Earlies</option>
+          <option value="late">Lates</option>
+        </select>
+      </div>
+      <div>
+        <p class="perm-line-label">Lines alternating as of W/C 17/05/26:</p>
+        <div class="perm-line-pair">
+          <select id="line-a-sel"></select>
+          <select id="line-b-sel"></select>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-row" id="toggle-row">
+      <span class="toggle-label">Permanent Earlies / Lates</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="perm-toggle">
+        <span class="toggle-slider"></span>
+      </label>
     </div>
     <p class="save-hint">Your selections are saved automatically</p>
   </div>
@@ -138,207 +241,585 @@ h1 { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.3
   <div class="result-card" id="result-card">
     <p class="placeholder">Select a date to view shift details.</p>
   </div>
+
+  <div class="diag-panel" id="diag-panel"></div>
+
+  <div class="export-btn-wrap">
+    <button class="export-main-btn" id="export-open-btn">&#x1F4C5; Export to Calendar</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="disclaimer-modal">
+  <div class="modal">
+    <p style="font-size:13px;color:var(--text-muted);font-style:italic;margin-bottom:0.75rem;">I know it's daft and way over the top, but somebody somewhere will find a way to make it my fault, so...</p>
+    <h2>Disclaimer</h2>
+    <p>This page was created by James Haigh as a personal tool and is shared freely in the hope that others may find it useful. It is an unofficial resource.</p>
+    <p>The shift information displayed is based on the timetable effective from 17th May 2026 until 12th December 2026. This page reflects the working timetable only and does not include Short Term Planning (STP) alterations or any other short notice changes. It will not be updated in real time to reflect emergency alterations or any other amendments made after publication. As outlined in the CRI, conductors must continue to check the daily appearance sheets before each turn of duty. This page should be used as a guide only and does not replace any official rostering or scheduling system.</p>
+    <p>Whilst I've made every effort to ensure the accuracy of the information displayed, conductors are responsible for verifying that the details shown match their own roster. I accept no responsibility for any errors, omissions, or issues arising from the use of this page, including but not limited to missed turns, incorrect working, or any consequential loss.</p>
+    <p><strong>Data &amp; Privacy</strong><br>This page does not collect, store, or transmit any personal data. All preferences, including your selected link, line, and any annual leave entries, are stored locally on your own device and are never shared with or accessible by anyone else.</p>
+    <p style="font-size:12px;color:var(--text-hint);font-style:italic;">Use of this page is entirely at your own risk.</p>
+    <button class="modal-close primary" id="disclaimer-close">I understand</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="help-modal">
+  <div class="modal">
+    <h2>Leeds Conductor Roster</h2>
+    <h3>Getting started</h3>
+    <p>This page shows your shift details based on your link and line number. Your selections are saved automatically on this device, so you won't need to re-enter them each time you visit.</p>
+    <h3>Using the calendar</h3>
+    <p>Tap any date to see your shift details, including start time, finish time, turn number, and shift length. Use the arrows to move between months. A small yellow dot in the corner of a date indicates a payday. The Jump to section below the calendar lets you jump straight back to today, or skip forward to your next working day.</p>
+    <h3>Permanent Earlies / Lates</h3>
+    <p>If you're doing a permanent earlies or lates swap with another conductor, toggle this on and select whether you're doing earlies or lates. Then enter the two lines you're alternating between in either order and the calendar will automatically show the correct work for each week.</p>
+    <h3>Annual Leave</h3>
+    <p>When viewing a date in the shift details, press Mark week as Annual Leave to mark that whole week as A/L. The week will appear with a terracotta border on the calendar. Your annual leave is saved on this device only - it won't sync if you use a different device or browser, and clearing your browser history or cache will remove it.</p>
+    <h3>Daily Leave</h3>
+    <p>Use the Mark as Daily Leave button to record a daily leave request on a specific date. Enter your position in the queue (e.g. 12th STT) when prompted. Daily leave shows as a purple border on the calendar and is also saved on this device only.</p>
+    <h3>Viewing diagrams</h3>
+    <p>On any date with a real turn of duty, tap View diagram to see a simplified breakdown of your working - trains, breaks, reliefs and sign on/off times. Tap a headcode to open it on Realtime Trains.</p>
+    <button class="modal-close primary" id="help-close">Got it</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="export-modal">
+  <div class="modal">
+    <h2>Export to Calendar</h2>
+    <div class="modal-section">
+      <h3>Date range</h3>
+      <div class="date-row">
+        <div><label>From</label><input type="date" id="exp-from" value="2026-05-17" min="2026-04-12"></div>
+        <div><label>To</label><input type="date" id="exp-to" value="2026-12-12"></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h3>Export mode</h3>
+      <div class="simple-toggle-row">
+        <span class="simple-toggle-label">Simple mode (Early / Late only)</span>
+        <label class="toggle-switch"><input type="checkbox" id="exp-simple"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+    <div class="modal-section">
+      <p class="colour-note">Mark any annual leave days before exporting so they're included in your calendar file.</p>
+      <p class="colour-note" style="margin-top:6px;">Each file imports as a separate calendar so you can set colours independently in your calendar app. Tap each file directly from your downloads folder for best results.</p>
+      <div class="download-btns" id="download-btns"></div>
+    </div>
+    <button class="modal-close" id="export-close">Close</button>
+  </div>
 </div>
 
 <script>
 const PAYDAYS = new Set(["2026-04-10","2026-05-08","2026-06-05","2026-07-03","2026-07-31","2026-08-28","2026-09-25","2026-10-23","2026-11-20","2026-12-18","2027-01-15","2027-02-12","2027-03-12","2027-04-09","2027-05-07","2027-06-04","2027-07-02","2027-07-30","2027-08-27","2027-09-24","2027-10-22","2027-11-19","2027-12-17","2028-01-14","2028-02-11","2028-03-10","2028-04-07","2028-05-05","2028-06-02","2028-06-30","2028-07-28","2028-08-25","2028-09-22","2028-10-20","2028-11-17","2028-12-15","2029-01-12","2029-02-09","2029-03-09","2029-04-06"]);
-const SPECIAL_DAYS = {"2026-12-25":"Public holiday \u2014 not required to work","2026-12-26":"Public holiday \u2014 not required to work","2027-12-25":"Public holiday \u2014 not required to work","2027-12-26":"Public holiday \u2014 not required to work","2028-12-25":"Public holiday \u2014 not required to work","2028-12-26":"Public holiday \u2014 not required to work","2029-12-25":"Public holiday \u2014 not required to work","2029-12-26":"Public holiday \u2014 not required to work"};
-
+const SPECIAL_DAYS = {"2026-12-25":"Public holiday - not required to work","2026-12-26":"Public holiday - not required to work","2027-12-25":"Public holiday - not required to work","2027-12-26":"Public holiday - not required to work","2028-12-25":"Public holiday - not required to work","2028-12-26":"Public holiday - not required to work","2029-12-25":"Public holiday - not required to work","2029-12-26":"Public holiday - not required to work"};
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAY_LABELS = ["Su","Mo","Tu","We","Th","Fr","Sa"];
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const NEW_ANCHOR = new Date('2026-05-17T00:00:00');
+const OLD_ANCHOR = new Date('2026-04-12T00:00:00');
+const VALID_UNTIL = new Date('2026-12-12T00:00:00');
+const WEEKS_OFFSET = 5;
 
-function pad(n) { return String(n).padStart(2,'0'); }
-function dateStr(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function pad(n){return String(n).padStart(2,'0');}
+function dateStr(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
 
-// Dark mode — auto dark for first-time visitors
-const darkBtn = document.getElementById('dark-btn');
-const savedTheme = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-darkBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-darkBtn.addEventListener('click', () => {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const next = isDark ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  darkBtn.textContent = next === 'dark' ? '☀️' : '🌙';
-  localStorage.setItem('theme', next);
-});
+function getAL(){try{return JSON.parse(localStorage.getItem('annualLeave')||'[]');}catch(e){return[];}}
+function isAL(k){return getAL().includes(k);}
+function getWeekSunday(dateKey){const dt=new Date(dateKey+'T00:00:00');dt.setDate(dt.getDate()-dt.getDay());return dt;}
+function getWeekKeys(dateKey){const sun=getWeekSunday(dateKey);return Array.from({length:7},(_,i)=>{const d=new Date(sun);d.setDate(sun.getDate()+i);return dateStr(d);});}
+function isWeekAllAL(dateKey){return getWeekKeys(dateKey).every(k=>isAL(k));}
+function toggleALWeek(dateKey){const al=getAL();const wk=getWeekKeys(dateKey);if(isWeekAllAL(dateKey)){wk.forEach(k=>{const i=al.indexOf(k);if(i!==-1)al.splice(i,1);});}else{wk.forEach(k=>{if(!al.includes(k))al.push(k);});}localStorage.setItem('annualLeave',JSON.stringify(al));}
 
-const linkSel = document.getElementById('link-sel');
-const lineSel = document.getElementById('line-sel');
-const _now = new Date();
-const todayKey = dateStr(_now);
-let viewYear = _now.getFullYear(), viewMonth = _now.getMonth();
-let selectedKey = todayKey;
-let ROSTER_DATA = null;
+function getDL(){try{return JSON.parse(localStorage.getItem('dailyLeave')||'{}');}catch(e){return{};}}
+function isDL(k){return !!getDL()[k];}
+function getDLInfo(k){return getDL()[k]||null;}
+function setDL(k,info){const dl=getDL();dl[k]=info;localStorage.setItem('dailyLeave',JSON.stringify(dl));}
+function removeDL(k){const dl=getDL();delete dl[k];localStorage.setItem('dailyLeave',JSON.stringify(dl));}
 
-function getShift(dateKey, linkName, line) {
-  const link = ROSTER_DATA[linkName];
-  if (!link) return null;
-  const anchor = new Date(link.wk1_anchor + 'T00:00:00');
-  const dt = new Date(dateKey + 'T00:00:00');
-  const dayOfWeek = dt.getDay();
-  const diffDays = Math.round((dt - anchor) / 86400000);
-  if (diffDays < 0) return null;
-  const weekFromAnchor = Math.floor(diffDays / 7);
-  const cycleLen = link.cycle_length;
-  const shiftedWeekIdx = (weekFromAnchor + (line - 1)) % cycleLen;
-  const weekData = link.weeks[shiftedWeekIdx];
-  if (!weekData) return null;
-  const day = weekData[DAY_NAMES[dayOfWeek]];
-  if (!day) return null;
-  const changeDate = new Date(link.timetable_change_date + 'T00:00:00');
-  if (dt >= changeDate && day.type === 'SHIFT') {
-    const wkNum = shiftedWeekIdx + 1;
-    return { type: wkNum % 2 === 1 ? 'LATE' : 'EARLY' };
+const darkBtn=document.getElementById('dark-btn');
+const savedTheme=localStorage.getItem('theme')||'dark';
+document.documentElement.setAttribute('data-theme',savedTheme);
+darkBtn.textContent=savedTheme==='dark'?'\u2600\uFE0F':'\uD83C\uDF19';
+darkBtn.addEventListener('click',()=>{const isDark=document.documentElement.getAttribute('data-theme')==='dark';const next=isDark?'light':'dark';document.documentElement.setAttribute('data-theme',next);darkBtn.textContent=next==='dark'?'\u2600\uFE0F':'\uD83C\uDF19';localStorage.setItem('theme',next);});
+
+const helpModal=document.getElementById('help-modal');
+document.getElementById('help-btn').addEventListener('click',()=>helpModal.classList.remove('hidden'));
+document.getElementById('help-close').addEventListener('click',()=>{helpModal.classList.add('hidden');localStorage.setItem('helpSeen','1');});
+helpModal.addEventListener('click',e=>{if(e.target===helpModal){helpModal.classList.add('hidden');localStorage.setItem('helpSeen','1');}});
+document.getElementById('disclaimer-close').addEventListener('click',()=>{document.getElementById('disclaimer-modal').classList.add('hidden');localStorage.setItem('disclaimerSeen','1');if(!localStorage.getItem('helpSeen'))helpModal.classList.remove('hidden');});
+
+const linkSel=document.getElementById('link-sel');
+const lineSel=document.getElementById('line-sel');
+const _now=new Date();
+const todayKey=dateStr(_now);
+let viewYear=_now.getFullYear(),viewMonth=_now.getMonth();
+let selectedKey=todayKey;
+let ROSTER_DATA=null;
+let DIAG_DATA=null;
+
+function getShift(dateKey,linkName,newLine){
+  const link=ROSTER_DATA[linkName];
+  if(!link)return null;
+  const dt=new Date(dateKey+'T00:00:00');
+  const dow=dt.getDay();
+  const dayName=DAY_NAMES[dow];
+  const cl=link.cycle_length;
+  if(dt>=NEW_ANCHOR){
+    const diffDays=Math.round((dt-NEW_ANCHOR)/86400000);
+    const wi=Math.floor(diffDays/7);
+    const shifted=(wi+(newLine-1))%cl;
+    const day=link.new_weeks[shifted][dayName];
+    if(!day)return null;
+    if(dt>VALID_UNTIL&&day.type==='SHIFT'){const wk=shifted+1;return{type:wk%2===1?'LATE':'EARLY'};}
+    return day;
+  }else{
+    const oldLine=((newLine-1-WEEKS_OFFSET)%cl+cl)%cl+1;
+    const diffDays=Math.round((dt-OLD_ANCHOR)/86400000);
+    if(diffDays<0)return null;
+    const wi=Math.floor(diffDays/7);
+    const shifted=(wi+(oldLine-1))%cl;
+    return link.old_weeks[shifted][dayName]||null;
   }
-  return day;
 }
 
-function getWkNum(dateKey, linkName, line) {
-  const link = ROSTER_DATA[linkName];
-  if (!link) return null;
-  const anchor = new Date(link.wk1_anchor + 'T00:00:00');
-  const dt = new Date(dateKey + 'T00:00:00');
-  const diffDays = Math.round((dt - anchor) / 86400000);
-  if (diffDays < 0) return null;
-  const weekFromAnchor = Math.floor(diffDays / 7);
-  return ((weekFromAnchor + (line - 1)) % link.cycle_length) + 1;
+function getWkNum(dateKey,linkName,newLine){
+  const link=ROSTER_DATA[linkName];
+  if(!link)return null;
+  const dt=new Date(dateKey+'T00:00:00');
+  const cl=link.cycle_length;
+  if(dt>=NEW_ANCHOR){const wi=Math.floor(Math.round((dt-NEW_ANCHOR)/86400000)/7);return((wi+(newLine-1))%cl)+1;}
+  else{const oldLine=((newLine-1-WEEKS_OFFSET)%cl+cl)%cl+1;const wi=Math.floor(Math.round((dt-OLD_ANCHOR)/86400000)/7);return((wi+(oldLine-1))%cl)+1;}
 }
 
-function renderCalendar() {
-  if (!ROSTER_DATA) return;
-  document.getElementById('month-label').textContent = `${MONTHS[viewMonth]} ${viewYear}`;
-  const grid = document.getElementById('cal-grid');
-  grid.innerHTML = '';
-  DAY_LABELS.forEach(l => { const el = document.createElement('div'); el.className = 'day-label'; el.textContent = l; grid.appendChild(el); });
-  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-  for (let i = 0; i < firstDay; i++) { const el = document.createElement('div'); el.className = 'day-cell empty'; grid.appendChild(el); }
-  const link = linkSel.value;
-  const line = parseInt(lineSel.value);
-  for (let d = 1; d <= daysInMonth; d++) {
-    const k = `${viewYear}-${pad(viewMonth+1)}-${pad(d)}`;
-    const shift = getShift(k, link, line);
-    const el = document.createElement('div');
-    el.textContent = d;
-    let cls = 'day-cell';
-    if (!shift) cls += ' out-range';
-    else if (shift.type === 'RD') cls += ' is-rd';
-    else if (shift.type === 'SHIFT' && shift.turn === 'A/R') cls += ' is-ar';
-    if (k === selectedKey) cls += ' selected';
-    if (k === todayKey) cls += ' today-cell';
-    el.className = cls;
-    if (PAYDAYS.has(k)) { const dot = document.createElement('div'); dot.className = 'payday-dot'; el.appendChild(dot); }
-    if (shift) { el.addEventListener('click', () => { selectedKey = k; renderCalendar(); renderResult(); }); }
+function getLineWkParityByLink(linkName,newLine){
+  const link=ROSTER_DATA[linkName];
+  if(!link)return null;
+  const wk=((newLine-1)%link.cycle_length)+1;
+  return wk%2===0?'even':'odd';
+}
+
+function getShiftPerm(dateKey,linkName,lineA,lineB){
+  const link=ROSTER_DATA[linkName];
+  if(!link)return null;
+  const cl=link.cycle_length;
+  const dt=new Date(dateKey+'T00:00:00');
+  const permType=document.getElementById('perm-type-sel').value;
+  let wkA;
+  if(dt>=NEW_ANCHOR){const wi=Math.floor(Math.round((dt-NEW_ANCHOR)/86400000)/7);wkA=((wi+(lineA-1))%cl)+1;}
+  else{const oldLA=((lineA-1-WEEKS_OFFSET)%cl+cl)%cl+1;const wi=Math.floor(Math.round((dt-OLD_ANCHOR)/86400000)/7);wkA=((wi+(oldLA-1))%cl)+1;}
+  const useA=permType==='early'?wkA%2===0:wkA%2===1;
+  return getShift(dateKey,linkName,useA?lineA:lineB);
+}
+
+function getActiveShift(dateKey){
+  const permOn=document.getElementById('perm-toggle').checked;
+  const link=linkSel.value;
+  if(permOn){const la=parseInt(document.getElementById('line-a-sel').value);const lb=parseInt(document.getElementById('line-b-sel').value);return getShiftPerm(dateKey,link,la,lb);}
+  return getShift(dateKey,link,parseInt(lineSel.value));
+}
+
+function getActiveWkNum(dateKey){
+  const permOn=document.getElementById('perm-toggle').checked;
+  const linkName=linkSel.value;
+  if(permOn){
+    const link=ROSTER_DATA[linkName];if(!link)return null;
+    const cl=link.cycle_length;const dt=new Date(dateKey+'T00:00:00');
+    const la=parseInt(document.getElementById('line-a-sel').value);
+    const lb=parseInt(document.getElementById('line-b-sel').value);
+    const permType=document.getElementById('perm-type-sel').value;
+    let wkA;
+    if(dt>=NEW_ANCHOR){const wi=Math.floor(Math.round((dt-NEW_ANCHOR)/86400000)/7);wkA=((wi+(la-1))%cl)+1;}
+    else{const oldLA=((la-1-WEEKS_OFFSET)%cl+cl)%cl+1;const wi=Math.floor(Math.round((dt-OLD_ANCHOR)/86400000)/7);wkA=((wi+(oldLA-1))%cl)+1;}
+    const useA=permType==='early'?wkA%2===0:wkA%2===1;
+    return getWkNum(dateKey,linkName,useA?la:lb);
+  }
+  return getWkNum(dateKey,linkName,parseInt(lineSel.value));
+}
+
+function renderCalendar(){
+  if(!ROSTER_DATA)return;
+  document.getElementById('month-label').textContent=`${MONTHS[viewMonth]} ${viewYear}`;
+  const grid=document.getElementById('cal-grid');
+  grid.innerHTML='';
+  DAY_LABELS.forEach(l=>{const el=document.createElement('div');el.className='day-label';el.textContent=l;grid.appendChild(el);});
+  const firstDay=new Date(viewYear,viewMonth,1).getDay();
+  const daysInMonth=new Date(viewYear,viewMonth+1,0).getDate();
+  for(let i=0;i<firstDay;i++){const el=document.createElement('div');el.className='day-cell empty';grid.appendChild(el);}
+  for(let d=1;d<=daysInMonth;d++){
+    const k=`${viewYear}-${pad(viewMonth+1)}-${pad(d)}`;
+    const shift=getActiveShift(k);
+    const el=document.createElement('div');
+    el.textContent=d;
+    let cls='day-cell';
+    if(!shift)cls+=' out-range';
+    else if(shift.type==='RD')cls+=' is-rd';
+    else if(shift.type==='SHIFT'&&shift.turn==='A/R')cls+=' is-ar';
+    if(k===selectedKey)cls+=' selected';
+    if(k===todayKey)cls+=' today-cell';
+    if(isAL(k))cls+=' is-al';
+    if(isDL(k))cls+=' is-dl';
+    el.className=cls;
+    if(PAYDAYS.has(k)){const dot=document.createElement('div');dot.className='payday-dot';el.appendChild(dot);}
+    if(shift){el.addEventListener('click',()=>{selectedKey=k;document.getElementById('diag-panel').classList.remove('visible');renderCalendar();renderResult();});}
     grid.appendChild(el);
   }
 }
 
-function adjHTML(label, key) {
-  const dt = new Date(key + 'T00:00:00');
-  const dayName = dt.toLocaleDateString('en-GB', {weekday:'long'});
-  const dispDate = dt.toLocaleDateString('en-GB', {day:'numeric', month:'short'});
-  const shift = getShift(key, linkSel.value, parseInt(lineSel.value));
-  if (!shift) return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">Outside roster</p></div>`;
-  if (shift.type === 'RD') return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type rd">Rest day</p></div>`;
-  if (shift.type === 'EARLY' || shift.type === 'LATE') return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">${shift.type === 'EARLY' ? 'Early' : 'Late'} shift</p></div>`;
-  const isAR = shift.turn === 'A/R';
-  return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-turn${isAR ? ' adj-type ar' : ''}">${shift.turn}</p><p class="adj-times">${shift.start} – ${shift.end} · ${shift.length}</p></div>`;
+function adjHTML(label,key){
+  const dt=new Date(key+'T00:00:00');
+  const dayName=dt.toLocaleDateString('en-GB',{weekday:'long'});
+  const dispDate=dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  const shift=getActiveShift(key);
+  if(!shift)return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">Outside roster</p></div>`;
+  if(shift.type==='RD')return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type rd">Rest day</p></div>`;
+  if(shift.type==='EARLY'||shift.type==='LATE')return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-type">${shift.type==='EARLY'?'Early':'Late'} shift</p></div>`;
+  const isAR=shift.turn==='A/R';
+  return `<div class="adj-card"><p class="adj-title">${label}</p><p class="adj-day-name">${dayName} ${dispDate}</p><p class="adj-turn${isAR?' adj-type ar':''}">${shift.turn}</p><p class="adj-times">${shift.start} - ${shift.end} - ${shift.length}</p></div>`;
 }
 
-function renderResult() {
-  if (!ROSTER_DATA) return;
-  const rc = document.getElementById('result-card');
-  if (!selectedKey) { rc.innerHTML = '<p class="placeholder">Select a date to view shift details.</p>'; return; }
-  const link = linkSel.value;
-  const line = parseInt(lineSel.value);
-  const shift = getShift(selectedKey, link, line);
-  if (!shift) { rc.innerHTML = '<p class="placeholder">Date outside roster range.</p>'; return; }
-  const dt = new Date(selectedKey + 'T00:00:00');
-  const dayName = dt.toLocaleDateString('en-GB', {weekday:'long'});
-  const dispDate = dt.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-  const wkNum = getWkNum(selectedKey, link, line);
-  const prevKey = dateStr(new Date(dt.getTime() - 86400000));
-  const nextKey = dateStr(new Date(dt.getTime() + 86400000));
-  let mainHTML = '';
-  if (shift.type === 'RD') mainHTML = `<div class="type-block rd">Rest day</div>`;
-  else if (shift.type === 'EARLY') mainHTML = `<div class="type-block">Early shift</div><p class="timetable-note">Job details aren't available for this date yet — the May timetable change hasn't been issued. Check back once the new diagrams are out.</p>`;
-  else if (shift.type === 'LATE') mainHTML = `<div class="type-block">Late shift</div><p class="timetable-note">Job details aren't available for this date yet — the May timetable change hasn't been issued. Check back once the new diagrams are out.</p>`;
-  else { const turnClass = shift.turn === 'A/R' ? ' style="color:var(--ar-color)"' : ''; mainHTML = `<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}"${turnClass}>${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`; }
-  const paydayHTML = PAYDAYS.has(selectedKey) ? `<p class="payday-note">&#x1F4B7; Payday</p>` : '';
-  const specialHTML = SPECIAL_DAYS[selectedKey] ? `<p class="special-note">${SPECIAL_DAYS[selectedKey]}</p>` : '';
-  rc.innerHTML = `<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${paydayHTML}${specialHTML}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div>`;
-}
+function getTurnNumber(turn){if(!turn)return null;const m=turn.match(/LD\s*(\d+)/);return m?m[1]:null;}
 
-document.getElementById('prev-btn').addEventListener('click', () => { viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar(); });
-document.getElementById('next-btn').addEventListener('click', () => { viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(); });
-document.getElementById('today-btn').addEventListener('click', () => {
-  viewYear = _now.getFullYear(); viewMonth = _now.getMonth();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
-});
-document.getElementById('next-turn-btn').addEventListener('click', () => {
-  const link = linkSel.value;
-  const line = parseInt(lineSel.value);
-  const start = new Date(_now.getTime() + 86400000);
-  let found = null;
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(start.getTime() + i * 86400000);
-    const k = dateStr(d);
-    const shift = getShift(k, link, line);
-    if (shift && shift.type !== 'RD') { found = { key: k, year: d.getFullYear(), month: d.getMonth() }; break; }
+function renderDiagram(turnNum,dateKey){
+  const panel=document.getElementById('diag-panel');
+  if(!DIAG_DATA||!turnNum){panel.innerHTML='';panel.classList.remove('visible');return;}
+  const variants=DIAG_DATA[turnNum];
+  if(!variants||!variants.length){panel.innerHTML='';panel.classList.remove('visible');return;}
+  const dt=new Date(dateKey+'T00:00:00');
+  const dateFrom=dt.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'}).split('/').reverse().join('/');
+  function parseDate(s){const p=s.split('/');return new Date(p[2],p[1]-1,p[0]);}
+  const relevant=variants.filter(v=>{const f=parseDate(v.from);const t=parseDate(v.to);return dt>=f&&dt<=t;});
+  const toShow=relevant.length?relevant:variants;
+
+  function rttLink(headcode,depTime,fromCrs,dateKey){
+    if(!fromCrs||!headcode)return headcode;
+    const t=depTime.replace(':','');
+    const d=dateKey;
+    return `<a class="train-headcode" href="https://www.realtimetrains.co.uk/search/detailed/gb-nr:${fromCrs}/${d}/${t}?sched=1" target="_blank">${headcode}</a>`;
   }
-  if (found) { viewYear = found.year; viewMonth = found.month; selectedKey = found.key; renderCalendar(); renderResult(); }
-});
 
-function populateLines() {
-  const link = ROSTER_DATA[linkSel.value];
-  const cl = link.cycle_length;
-  lineSel.innerHTML = '';
-  for (let i = 1; i <= cl; i++) {
-    const o = document.createElement('option');
-    o.value = i; o.textContent = `Line ${i}`;
-    lineSel.appendChild(o);
+  function renderVariant(v,idx){
+    let segs='';
+    for(const s of v.segments){
+      if(s.type==='signon'){segs+=`<div class="seg-activity seg-signon"><span class="seg-icon">&#x1F7E2;</span><div><p class="seg-label">Sign on</p><p class="seg-value">${s.time}</p></div></div>`;}
+      else if(s.type==='signoff'){segs+=`<div class="seg-activity seg-signoff"><span class="seg-icon">&#x1F534;</span><div><p class="seg-label">Sign off</p><p class="seg-value">${s.time}</p></div></div>`;}
+      else if(s.type==='break'){segs+=`<div class="seg-activity seg-break"><span class="seg-icon">&#x2615;</span><div><p class="seg-label">Break</p><p class="seg-value">${s.from} - ${s.to}</p><p class="seg-sub">${s.duration}</p></div></div>`;}
+      else if(s.type==='rel'){segs+=`<div class="seg-activity seg-rel"><span class="seg-icon">&#x1F501;</span><div><p class="seg-label">Relieve</p><p class="seg-value">${s.turn}</p><p class="seg-sub">at ${s.time}</p></div></div>`;}
+      else if(s.type==='reld'){segs+=`<div class="seg-activity seg-rel"><span class="seg-icon">&#x1F504;</span><div><p class="seg-label">Relieved by</p><p class="seg-value">${s.turn}</p><p class="seg-sub">at ${s.time}</p></div></div>`;}
+      else if(s.type==='taxi'){segs+=`<div class="seg-activity seg-taxi"><span class="seg-icon">&#x1F696;</span><div><p class="seg-label">Taxi</p><p class="seg-value">to ${s.to}</p></div></div>`;}
+      else if(s.type==='note'){segs+=`<div class="seg-activity seg-note"><span class="seg-icon">&#x2139;&#xFE0F;</span><div><p class="seg-value">${s.text}</p></div></div>`;}
+      else if(s.type==='train'){
+        const hcode=rttLink(s.headcode,s.dep,s.from_crs,dateKey);
+        const notes=s.notes&&s.notes.length?`<p class="train-notes">${s.notes.join(' - ')}</p>`:'';
+        const disp=s.dispose?`<p class="train-dispose">Dispose at ${s.to}</p>`:(s.to?`<p class="train-dispose">${s.to} arr ${s.arr}</p>`:'');
+        segs+=`<div class="seg-card"><div class="train-header"><div><p class="train-dep">${s.dep}</p><p class="train-from">${s.from}</p></div><div class="train-right">${hcode}<p class="train-stock">${s.stock||''}</p></div></div><div class="train-body"><div class="train-route"><span>${s.from}</span><span> > </span><span class="train-dest">${s.to||'?'}</span><span class="train-arr">${s.arr?'arr '+s.arr:''}</span></div>${notes}${disp}</div></div>`;
+      }
+    }
+    return `<div id="diag-variant-${idx}" style="${idx>0?'display:none':''}">${segs}</div>`;
   }
-  const savedLine = parseInt(localStorage.getItem('rosterLine_' + linkSel.value)) || 1;
-  lineSel.value = (savedLine >= 1 && savedLine <= cl) ? savedLine : 1;
+
+  const tabsHTML=toShow.length>1?`<div class="diag-tabs">${toShow.map((v,i)=>`<button class="diag-tab${i===0?' active':''}" onclick="showDiagTab(${i},${toShow.length})">${v.days}</button>`).join('')}</div>`:'';
+  const flagsHTML=toShow[0].flags.map(f=>`<span class="meta-pill flag">${f}</span>`).join('');
+  const applyHTML=toShow.length===1?`<span class="meta-pill flag">${toShow[0].days} ${toShow[0].from} - ${toShow[0].to}</span>`:'';
+
+  panel.innerHTML=`<div class="diag-summary"><p class="diag-summary-title">LD ${turnNum}</p><div class="diag-meta"><span class="meta-pill">On ${toShow[0].on}</span><span class="meta-pill">Off ${toShow[0].off}</span><span class="meta-pill">${toShow[0].hrs}hrs</span>${applyHTML}${flagsHTML}</div></div>${tabsHTML}<div class="segments">${toShow.map((v,i)=>renderVariant(v,i)).join('')}</div>`;
+  panel.classList.add('visible');
 }
 
-linkSel.addEventListener('change', () => {
-  localStorage.setItem('rosterLink', linkSel.value);
-  populateLines();
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
-});
-lineSel.addEventListener('change', () => {
-  localStorage.setItem('rosterLine_' + linkSel.value, lineSel.value);
-  selectedKey = todayKey;
-  renderCalendar(); renderResult();
+function showDiagTab(idx,total){
+  document.querySelectorAll('.diag-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  for(let i=0;i<total;i++){const el=document.getElementById('diag-variant-'+i);if(el)el.style.display=i===idx?'':'none';}
+}
+
+function renderResult(){
+  if(!ROSTER_DATA)return;
+  const rc=document.getElementById('result-card');
+  if(!selectedKey){rc.innerHTML='<p class="placeholder">Select a date to view shift details.</p>';return;}
+  const shift=getActiveShift(selectedKey);
+  if(!shift){rc.innerHTML=selectedKey===todayKey?'<p class="placeholder">Select a date to view shift details.</p>':'<p class="placeholder">Date outside roster range.</p>';return;}
+  const dt=new Date(selectedKey+'T00:00:00');
+  const dayName=dt.toLocaleDateString('en-GB',{weekday:'long'});
+  const dispDate=dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const wkNum=getActiveWkNum(selectedKey);
+  const prevKey=dateStr(new Date(dt.getTime()-86400000));
+  const nextKey=dateStr(new Date(dt.getTime()+86400000));
+  let mainHTML='';
+  const alActive=isAL(selectedKey);
+  const dlInfo=getDLInfo(selectedKey);
+
+  if(shift.type==='RD')mainHTML=`<div class="type-block rd">Rest day</div>`;
+  else if(shift.type==='EARLY')mainHTML=`<div class="type-block">Early shift</div><p class="timetable-note">Detailed job information is not available beyond 12th December 2026.</p>`;
+  else if(shift.type==='LATE')mainHTML=`<div class="type-block">Late shift</div><p class="timetable-note">Detailed job information is not available beyond 12th December 2026.</p>`;
+  else{const tc=shift.turn==='A/R'?' style="color:var(--ar-color)"':'';mainHTML=`<div class="metrics"><div class="metric"><p class="metric-label">Start</p><p class="metric-value">${shift.start}</p></div><div class="metric"><p class="metric-label">Finish</p><p class="metric-value">${shift.end}</p></div><div class="metric"><p class="metric-label">Turn</p><p class="metric-value${shift.turn&&shift.turn.length>8?' small':''}"${tc}>${shift.turn}</p></div><div class="metric"><p class="metric-label">Length</p><p class="metric-value">${shift.length}</p></div></div>`;}
+
+  const badges=[];
+  if(PAYDAYS.has(selectedKey))badges.push('<span class="badge payday">&#x1F4B7; Payday</span>');
+  if(alActive)badges.push('<span class="badge al">Annual Leave</span>');
+  if(dlInfo)badges.push(`<span class="badge dl">Daily Leave - ${dlInfo}</span>`);
+  const badgesHTML=badges.length?`<div class="badges-row">${badges.join('')}</div>`:'';
+  const specialHTML=SPECIAL_DAYS[selectedKey]?`<p class="special-note">${SPECIAL_DAYS[selectedKey]}</p>`:'';
+
+  const alWeekAll=isWeekAllAL(selectedKey);
+  const alBtnText=alWeekAll?'Week marked as Annual Leave':'Mark week as Annual Leave';
+  const alBtnClass=alWeekAll?'action-btn active-al':'action-btn';
+  const dlBtnText=dlInfo?'Remove Daily Leave':'Mark as Daily Leave';
+  const dlBtnClass=dlInfo?'action-btn active-dl':'action-btn';
+
+  const turnNum=shift.type==='SHIFT'&&shift.turn&&shift.turn!=='A/R'?getTurnNumber(shift.turn):null;
+  const diagBtnHTML=turnNum?`<button class="action-btn diag-btn" id="diag-btn" onclick="toggleDiagram('${turnNum}')">&#x1F4CB; View diagram</button>`:'';
+
+  const dlWarn=alActive&&dlInfo?`<p style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic;">You have daily leave booked on this date during a week of annual leave.</p>`:'';
+  const dlInputHTML=`<div class="dl-input-row hidden" id="dl-input-row"><input type="number" id="dl-position" min="1" max="99" placeholder="Pos"><select id="dl-type"><option value="STT">STT</option><option value="Confirmed">Confirmed</option></select><button onclick="saveDL()">Save</button></div>`;
+
+  rc.innerHTML=`<div class="result-date-title">${dayName}, ${dispDate}<span class="wk-badge">Week ${wkNum}</span></div>${mainHTML}${badgesHTML}${specialHTML}${dlWarn}<div class="adj-section">${adjHTML('Day before',prevKey)}${adjHTML('Day after',nextKey)}</div><div class="action-btns"><button class="${alBtnClass}" id="al-btn" onclick="handleAL()">${alBtnText}</button><button class="${dlBtnClass}" id="dl-btn" onclick="handleDL()">${dlBtnText}</button>${dlInputHTML}${diagBtnHTML}</div>`;
+}
+
+function handleAL(){
+  const alWeekAll=isWeekAllAL(selectedKey);
+  const dlInfo=getDLInfo(selectedKey);
+  if(!alWeekAll&&dlInfo){
+    alert('You have daily leave booked during this week. Your daily leave will remain recorded.');
+  }
+  toggleALWeek(selectedKey);
+  renderCalendar();
+  renderResult();
+}
+
+function handleDL(){
+  const dlInfo=getDLInfo(selectedKey);
+  if(dlInfo){removeDL(selectedKey);renderCalendar();renderResult();return;}
+  const row=document.getElementById('dl-input-row');
+  if(row){row.classList.toggle('hidden');}
+}
+
+function saveDL(){
+  const pos=document.getElementById('dl-position').value;
+  const type=document.getElementById('dl-type').value;
+  if(!pos||pos<1)return;
+  const suffix=pos==='1'?'st':pos==='2'?'nd':pos==='3'?'rd':'th';
+  setDL(selectedKey,`${pos}${suffix} ${type}`);
+  renderCalendar();
+  renderResult();
+}
+
+function toggleDiagram(turnNum){
+  const panel=document.getElementById('diag-panel');
+  const btn=document.getElementById('diag-btn');
+  if(panel.classList.contains('visible')&&panel.dataset.turn===turnNum){
+    panel.classList.remove('visible');
+    panel.innerHTML='';
+    panel.dataset.turn='';
+    if(btn)btn.classList.remove('open');
+  }else{
+    panel.dataset.turn=turnNum;
+    renderDiagram(turnNum,selectedKey);
+    if(btn)btn.classList.add('open');
+    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }
+}
+
+document.getElementById('prev-btn').addEventListener('click',()=>{viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--;}renderCalendar();});
+document.getElementById('next-btn').addEventListener('click',()=>{viewMonth++;if(viewMonth>11){viewMonth=0;viewYear++;}renderCalendar();});
+document.getElementById('today-btn').addEventListener('click',()=>{viewYear=_now.getFullYear();viewMonth=_now.getMonth();selectedKey=todayKey;document.getElementById('diag-panel').classList.remove('visible');renderCalendar();renderResult();});
+document.getElementById('next-turn-btn').addEventListener('click',()=>{
+  const start=new Date(_now.getTime()+86400000);
+  for(let i=0;i<400;i++){const d=new Date(start.getTime()+i*86400000);const k=dateStr(d);const shift=getActiveShift(k);if(shift&&shift.type!=='RD'){viewYear=d.getFullYear();viewMonth=d.getMonth();selectedKey=k;document.getElementById('diag-panel').classList.remove('visible');renderCalendar();renderResult();return;}}
 });
 
-async function init() {
-  try {
-    const response = await fetch('roster.json');
-    if (!response.ok) throw new Error('Failed to load roster.json');
-    ROSTER_DATA = await response.json();
-    const linkNames = Object.keys(ROSTER_DATA);
-    linkNames.forEach(name => {
-      const o = document.createElement('option');
-      o.value = name; o.textContent = name;
-      linkSel.appendChild(o);
-    });
-    const savedLink = localStorage.getItem('rosterLink') || 'Link 1A';
-    linkSel.value = linkNames.includes(savedLink) ? savedLink : linkNames[0];
+function populateLineB(){
+  const linkName=linkSel.value;const link=ROSTER_DATA[linkName];const cl=link.cycle_length;
+  const lineA=parseInt(document.getElementById('line-a-sel').value);
+  const parityA=getLineWkParityByLink(linkName,lineA);
+  const lineBSel=document.getElementById('line-b-sel');const prevB=lineBSel.value;
+  lineBSel.innerHTML='';
+  for(let i=1;i<=cl;i++){if(getLineWkParityByLink(linkName,i)!==parityA){const o=document.createElement('option');o.value=i;o.textContent=`Line ${i}`;lineBSel.appendChild(o);}}
+  const savedB=parseInt(localStorage.getItem('permLineB_'+linkName));
+  if(savedB&&lineBSel.querySelector(`option[value="${savedB}"]`))lineBSel.value=savedB;
+  else if(prevB&&lineBSel.querySelector(`option[value="${prevB}"]`))lineBSel.value=prevB;
+}
+
+function populateLineA(){
+  const linkName=linkSel.value;const link=ROSTER_DATA[linkName];const cl=link.cycle_length;
+  const lineASel=document.getElementById('line-a-sel');const prevA=lineASel.value;
+  lineASel.innerHTML='';
+  for(let i=1;i<=cl;i++){const o=document.createElement('option');o.value=i;o.textContent=`Line ${i}`;lineASel.appendChild(o);}
+  const savedA=parseInt(localStorage.getItem('permLineA_'+linkName));
+  if(savedA&&lineASel.querySelector(`option[value="${savedA}"]`))lineASel.value=savedA;
+  else if(prevA&&lineASel.querySelector(`option[value="${prevA}"]`))lineASel.value=prevA;
+  populateLineB();
+}
+
+function populateLines(){
+  const linkName=linkSel.value;const link=ROSTER_DATA[linkName];const cl=link.cycle_length;
+  lineSel.innerHTML='';
+  for(let i=1;i<=cl;i++){const o=document.createElement('option');o.value=i;o.textContent=`Line ${i}`;lineSel.appendChild(o);}
+  const savedLine=parseInt(localStorage.getItem('rosterLine_'+linkName))||1;
+  lineSel.value=(savedLine>=1&&savedLine<=cl)?savedLine:1;
+  try{populateLineA();}catch(e){console.warn(e);}
+}
+
+function applyPermLayout(on){
+  document.getElementById('standard-line-row').style.display=on?'none':'';
+  document.getElementById('perm-rows').classList.toggle('visible',on);
+  const card=document.getElementById('selectors-card');
+  const toggleRow=document.getElementById('toggle-row');
+  const hint=card.querySelector('.save-hint');
+  if(on)card.insertBefore(toggleRow,card.firstChild);
+  else card.insertBefore(toggleRow,hint);
+}
+
+linkSel.addEventListener('change',()=>{localStorage.setItem('rosterLink',linkSel.value);populateLines();selectedKey=todayKey;renderCalendar();renderResult();});
+lineSel.addEventListener('change',()=>{localStorage.setItem('rosterLine_'+linkSel.value,lineSel.value);selectedKey=todayKey;renderCalendar();renderResult();});
+document.getElementById('perm-toggle').addEventListener('change',function(){localStorage.setItem('permMode',this.checked?'1':'0');applyPermLayout(this.checked);selectedKey=todayKey;renderCalendar();renderResult();});
+document.getElementById('perm-type-sel').addEventListener('change',function(){localStorage.setItem('permType_'+linkSel.value,this.value);selectedKey=todayKey;renderCalendar();renderResult();});
+document.getElementById('line-a-sel').addEventListener('change',function(){localStorage.setItem('permLineA_'+linkSel.value,this.value);populateLineB();selectedKey=todayKey;renderCalendar();renderResult();});
+document.getElementById('line-b-sel').addEventListener('change',function(){localStorage.setItem('permLineB_'+linkSel.value,this.value);selectedKey=todayKey;renderCalendar();renderResult();});
+
+function pad2(n){return String(n).padStart(2,'0');}
+function isoDate(d){return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}`;}
+function isoDateTime(d){return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;}
+function uid(p,k){return `${p}-${k}-${Math.random().toString(36).slice(2)}@leedsconductorroster`;}
+function parseTime(dateStr,timeStr,nextDay){const [h,m]=timeStr.split(':').map(Number);const base=new Date(dateStr+'T00:00:00');if(nextDay)base.setDate(base.getDate()+1);base.setHours(h,m,0);return base;}
+function wrapICS(calName,events){return "BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Leeds Conductor Roster//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:"+calName+"
+X-WR-CALDESC:"+calName+"
+"+events+"END:VCALENDAR
+";}
+function downloadICS(filename,content){const blob=new Blob([content],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
+
+function getDateRange(){return{from:new Date(document.getElementById('exp-from').value+'T00:00:00'),to:new Date(document.getElementById('exp-to').value+'T00:00:00')};}
+function iterateDates(from,to,cb){const cur=new Date(from);while(cur<=to){cb(new Date(cur),dateStr(cur));cur.setDate(cur.getDate()+1);}}
+
+function buildShiftsICS(mode){
+  const{from,to}=getDateRange();const al=getAL();let events='';
+  const calName=mode==='early'?'Roster - Early Shifts':mode==='late'?'Roster - Late Shifts':'Roster - Shifts';
+  iterateDates(from,to,(cur,k)=>{
+    const shift=getActiveShift(k);if(!shift||shift.type==='RD')return;
+    const wk=getActiveWkNum(k);const isEarly=wk%2===0;
+    if(mode==='early'&&!isEarly)return;if(mode==='late'&&isEarly)return;
+    if(shift.type==='SHIFT'){
+      if(mode==='detailed'){
+        const startDt=parseTime(k,shift.start,false);const endH=parseInt(shift.end.split(':')[0]);const startH=parseInt(shift.start.split(':')[0]);const endDt=parseTime(k,shift.end,endH<startH);
+        events+=`BEGIN:VEVENT
+UID:${uid('shift',k)}
+DTSTART:${isoDateTime(startDt)}
+DTEND:${isoDateTime(endDt)}
+SUMMARY:${shift.turn}
+END:VEVENT
+`;
+      }else{events+=`BEGIN:VEVENT
+UID:${uid('shift',k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime()+86400000))}
+SUMMARY:${isEarly?'Early Shift':'Late Shift'}
+END:VEVENT
+`;}
+    }else if(shift.type==='EARLY'||shift.type==='LATE'){
+      const se=shift.type==='EARLY';if(mode==='early'&&!se)return;if(mode==='late'&&se)return;
+      events+=`BEGIN:VEVENT
+UID:${uid('shift',k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime()+86400000))}
+SUMMARY:${se?'Early Shift':'Late Shift'}
+END:VEVENT
+`;
+    }
+  });
+  return wrapICS(calName,events);
+}
+
+function buildRdICS(){const{from,to}=getDateRange();let events='';iterateDates(from,to,(cur,k)=>{const shift=getActiveShift(k);if(shift&&shift.type==='RD'){events+=`BEGIN:VEVENT
+UID:${uid('rd',k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime()+86400000))}
+SUMMARY:Rest Day
+END:VEVENT
+`;}});return wrapICS('Roster - Rest Days',events);}
+
+function buildAlICS(){
+  const{from,to}=getDateRange();const al=getAL();let events='';
+  iterateDates(from,to,(cur,k)=>{
+    if(al.includes(k)){
+      events+=`BEGIN:VEVENT
+UID:${uid('al',k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime()+86400000))}
+SUMMARY:Annual Leave
+END:VEVENT
+`;
+      const shift=getActiveShift(k);
+      if(shift&&shift.type==='SHIFT'){const startDt=parseTime(k,shift.start,false);const endH=parseInt(shift.end.split(':')[0]);const startH=parseInt(shift.start.split(':')[0]);const endDt=parseTime(k,shift.end,endH<startH);events+=`BEGIN:VEVENT
+UID:${uid('al-shift',k)}
+DTSTART:${isoDateTime(startDt)}
+DTEND:${isoDateTime(endDt)}
+SUMMARY:${shift.turn} (A/L)
+END:VEVENT
+`;}
+    }
+  });
+  return wrapICS('Roster - Annual Leave',events);
+}
+
+function buildDlICS(){
+  const{from,to}=getDateRange();const dl=getDL();let events='';
+  iterateDates(from,to,(cur,k)=>{if(dl[k]){events+=`BEGIN:VEVENT
+UID:${uid('dl',k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime()+86400000))}
+SUMMARY:Daily Leave - ${dl[k]}
+END:VEVENT
+`;}});
+  return wrapICS('Roster - Daily Leave',events);
+}
+
+function buildPayICS(){const{from,to}=getDateRange();let events='';iterateDates(from,to,(cur,k)=>{if(PAYDAYS.has(k)){events+=`BEGIN:VEVENT
+UID:${uid('pay',k)}
+DTSTART;VALUE=DATE:${isoDate(cur)}
+DTEND;VALUE=DATE:${isoDate(new Date(cur.getTime()+86400000))}
+SUMMARY:Payday
+END:VEVENT
+`;}});return wrapICS('Roster - Paydays',events);}
+
+function buildDownloadBtns(){
+  const simple=document.getElementById('exp-simple').checked;
+  const wrap=document.getElementById('download-btns');wrap.innerHTML='';
+  function makeBtn(label,fn){const btn=document.createElement('button');btn.className='export-dl-btn';btn.style.marginTop='0';btn.textContent=`Download ${label}`;btn.addEventListener('click',fn);wrap.appendChild(btn);}
+  if(simple){makeBtn('Early Shifts.ics',()=>downloadICS('Early Shifts.ics',buildShiftsICS('early')));makeBtn('Late Shifts.ics',()=>downloadICS('Late Shifts.ics',buildShiftsICS('late')));}
+  else{makeBtn('Shifts.ics',()=>downloadICS('Shifts.ics',buildShiftsICS('detailed')));}
+  makeBtn('Rest Days.ics',()=>downloadICS('Rest Days.ics',buildRdICS()));
+  makeBtn('Annual Leave.ics',()=>downloadICS('Annual Leave.ics',buildAlICS()));
+  makeBtn('Daily Leave.ics',()=>downloadICS('Daily Leave.ics',buildDlICS()));
+  makeBtn('Paydays.ics',()=>downloadICS('Paydays.ics',buildPayICS()));
+}
+
+document.getElementById('export-open-btn').addEventListener('click',()=>{buildDownloadBtns();document.getElementById('export-modal').classList.remove('hidden');});
+document.getElementById('export-close').addEventListener('click',()=>document.getElementById('export-modal').classList.add('hidden'));
+document.getElementById('export-modal').addEventListener('click',e=>{if(e.target===document.getElementById('export-modal'))document.getElementById('export-modal').classList.add('hidden');});
+document.getElementById('exp-simple').addEventListener('change',buildDownloadBtns);
+
+async function init(){
+  try{
+    const[rosterResp,diagResp]=await Promise.all([fetch('roster.json'),fetch('diagrams.json')]);
+    if(!rosterResp.ok)throw new Error('Failed to load roster.json');
+    ROSTER_DATA=await rosterResp.json();
+    if(diagResp.ok)DIAG_DATA=await diagResp.json();
+    const linkNames=Object.keys(ROSTER_DATA);
+    linkNames.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;linkSel.appendChild(o);});
+    const savedLink=localStorage.getItem('rosterLink')||'Link 1A';
+    linkSel.value=linkNames.includes(savedLink)?savedLink:linkNames[0];
     populateLines();
-    renderCalendar();
-    renderResult();
-  } catch(e) {
-    document.getElementById('result-card').innerHTML = '<p class="placeholder">Could not load roster data. Please check roster.json is uploaded.</p>';
-    console.error(e);
-  }
+    const permSaved=localStorage.getItem('permMode')==='1';
+    document.getElementById('perm-toggle').checked=permSaved;
+    const permTypeSaved=localStorage.getItem('permType_'+(localStorage.getItem('rosterLink')||'Link 1A'))||'early';
+    document.getElementById('perm-type-sel').value=permTypeSaved;
+    applyPermLayout(permSaved);
+    try{populateLineA();}catch(e){console.warn(e);}
+    if(!localStorage.getItem('disclaimerSeen')){document.getElementById('disclaimer-modal').classList.remove('hidden');}
+    else if(!localStorage.getItem('helpSeen')){helpModal.classList.remove('hidden');}
+    setTimeout(()=>{selectedKey=todayKey;renderCalendar();renderResult();},0);
+  }catch(e){document.getElementById('result-card').innerHTML='<p class="placeholder">Could not load roster data. Please ensure roster.json is uploaded.</p>';console.error(e);}
 }
-
 init();
 </script>
 </body>
